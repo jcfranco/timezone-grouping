@@ -22,7 +22,7 @@ export function groupTimeZones(): FinalGrouping[] {
 
     // the grouped timezone that we want as a result
     const newGroup = {
-      label: null,
+      label: undefined,
       rawTZs: [{ label, count }],
       representative: label,
       count,
