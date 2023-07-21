@@ -40,7 +40,7 @@ const _extractContinent = (label: string) => {
   }
 
   const lastIndex = label.lastIndexOf('/');
-  return (lastIndex === -1 ? label : label.substr(0, lastIndex));
+  return (lastIndex === -1 ? label : label.slice(0, lastIndex));
 }
 
 const _isRegularContinent = (continent: string) => CONTINENT_ALLOWLIST.includes(continent);
@@ -72,7 +72,7 @@ const _extractCity = (label: string): string => {
   }
 
   const lastIndex = label.lastIndexOf('/');
-  return (lastIndex === -1 ? label : label.substr(lastIndex + 1)).replace(/[\W_]/g, ' ');
+  return (lastIndex === -1 ? label : label.slice(lastIndex + 1)).replace(/[\W_]/g, ' ');
 }
 
 export const calculateGroupLabel = (rawTZs: RawTimeZone[], max = 5) => {
