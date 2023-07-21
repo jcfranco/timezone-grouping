@@ -1,4 +1,6 @@
-module.exports = [
+import type { SupportedTimeZone } from "../interfaces.d.ts";
+
+export const database: SupportedTimeZone[] = [
   { label: 'Europe/Andorra' },
   { label: 'Asia/Dubai' },
   { label: 'Asia/Kabul' },

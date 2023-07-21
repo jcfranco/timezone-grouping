@@ -1,8 +1,7 @@
-const moment = require('moment-timezone');
-const orderBy = require('lodash.orderby');
-const uniq = require('lodash.uniq');
-
-const { cityTranslations } = require('./config');
+import moment from 'moment-timezone';
+import { orderBy, uniq } from 'lodash-es';
+import { cityTranslations } from './config/index.mjs';
+import type { MappedDb, RawTimeZone, SupportedTimeZone } from "./interfaces.d.ts";
 
 const CONTINENT_ALLOWLIST = [
   'Europe',
@@ -24,7 +23,7 @@ const LABELS_DENYLIST = [
   'America/North_Dakota/Center',
 ];
 
-const _getDates = (startDate, numDays) => {
+const _getDates = (startDate: any, numDays: number) => {
   const dateArray = [];
 
   const momentStart = moment(startDate);
@@ -36,7 +35,7 @@ const _getDates = (startDate, numDays) => {
   return dateArray;
 };
 
-const _extractContinent = label => {
+const _extractContinent = (label: string) => {
   if (label.indexOf('Istanbul') !== -1) {
     return 'Europe';
   }
@@ -45,9 +44,9 @@ const _extractContinent = label => {
   return (lastIndex === -1 ? label : label.substr(0, lastIndex));
 }
 
-const _isRegularContinent = continent => CONTINENT_ALLOWLIST.includes(continent);
+const _isRegularContinent = (continent: string) => CONTINENT_ALLOWLIST.includes(continent);
 
-const generateMappedDB = (database, startDate, numDays) => {
+export const generateMappedDB = (database: SupportedTimeZone[], startDate: string, numDays: number): MappedDb[] => {
   console.log(`Initializing data starting ${startDate} with ${numDays} days in the future, comparing ${database.length} timezones`);
 
   const theDates = _getDates(startDate, numDays);
@@ -62,9 +61,9 @@ const generateMappedDB = (database, startDate, numDays) => {
   });
 };
 
-const compareDateArrs = (arr1, arr2) => arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
+export const compareDateArrs = (arr1: any[], arr2: any[]) => arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
 
-const _extractCity = label => {
+const _extractCity = (label: string): string => {
   if (cityTranslations[label]) {
     return cityTranslations[label];
   }
@@ -77,7 +76,7 @@ const _extractCity = label => {
   return (lastIndex === -1 ? label : label.substr(lastIndex + 1)).replace(/[\W_]/g, ' ');
 }
 
-const calculateGroupLabel = (rawTZs, max = 5) => {
+export const calculateGroupLabel = (rawTZs: RawTimeZone[], max = 5) => {
   rawTZs = orderBy(rawTZs, 'count', 'desc');
 
   const shrinkedTZs = rawTZs.filter(({ label }) => _isRegularContinent(_extractContinent(label)));
@@ -93,9 +92,3 @@ const calculateGroupLabel = (rawTZs, max = 5) => {
     .slice(0, max)
     .join(', ');
 }
-
-module.exports = {
-  generateMappedDB,
-  compareDateArrs,
-  calculateGroupLabel,
-};

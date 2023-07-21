@@ -1,0 +1,8 @@
+{
+  "*.{cts,mts,ts}": ["xo --fix --prettier --space"],
+  "*.{html,json}": ["prettier --write"],
+  "*.md": [
+    "markdownlint --fix --disable MD024 MD013 MD041 MD033",
+    "prettier --write"
+  ]
+}
