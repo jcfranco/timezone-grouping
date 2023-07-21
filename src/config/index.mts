@@ -1,5 +1,6 @@
 export { cityTranslations } from './cities.mjs';
 export { database } from "./database.mjs";
 
-export const START_DATE = '2020-01-01';
+const now = new Date();
+export const START_DATE = now.toISOString();
 export const NUM_DAYS = 365;
