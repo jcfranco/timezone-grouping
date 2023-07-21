@@ -1,4 +1,3 @@
-import { orderBy } from 'lodash-es';
 import { START_DATE, NUM_DAYS, database } from './config/index.mjs';
 import { generateMappedDB, compareDateArrs, calculateGroupLabel } from './utils.mjs';
 import type { FinalGrouping, Grouping } from "./interfaces.d.ts";
@@ -60,12 +59,13 @@ export function groupTimeZones(): FinalGrouping[] {
 
 // now that we have a group, we want an easy way to find a fitting label for the group
 // which is defined as the list of the most-common 7 cities, shown in alphabetical order
-  const finalGrouping = orderBy(grouping.map(x => ({
+  const finalGrouping = grouping.map(x => ({
     label: calculateGroupLabel(x.rawTZs, 7),
     representative: x.representative,
     count: x.count,
     rawTZs: x.rawTZs.map(_ => _.label).sort(),
-  })), 'count', 'desc')
+  }))
+    .sort((a, b) => b.count - a.count)
     .map(({ count, ...rest }) => ({ ...rest })); // remove count from list as not needed for the export
 
 // sanity check

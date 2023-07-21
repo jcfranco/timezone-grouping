@@ -1,5 +1,4 @@
 import moment from 'moment-timezone';
-import { orderBy, uniq } from 'lodash-es';
 import { cityTranslations } from './config/index.mjs';
 import type { MappedDb, RawTimeZone, SupportedTimeZone } from "./interfaces.d.ts";
 
@@ -77,16 +76,17 @@ const _extractCity = (label: string): string => {
 }
 
 export const calculateGroupLabel = (rawTZs: RawTimeZone[], max = 5) => {
-  rawTZs = orderBy(rawTZs, 'count', 'desc');
+  rawTZs = rawTZs.sort((a, b) => b.count - a.count);
 
   const shrinkedTZs = rawTZs.filter(({ label }) => _isRegularContinent(_extractContinent(label)));
   rawTZs = shrinkedTZs.length === 0 ? [rawTZs[0]] : shrinkedTZs;
 
-  const uniqueLabels = uniq(
+  const uniqueLabels = [
+    ...new Set(
       rawTZs
-      .map(({ label }) => _extractCity(label))
-      .filter(_ => !!_)
-    );
+        .map(({ label }) => _extractCity(label))
+        .filter(_ => !!_)
+    )];
 
   return uniqueLabels
     .slice(0, max)

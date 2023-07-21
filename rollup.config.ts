@@ -47,7 +47,6 @@ const bundles = [
       name: umdName,
       globals: {
         'moment-timezone': 'moment',
-        'lodash-es': '_',
       },
     },
   },
@@ -59,7 +58,6 @@ const bundles = [
       name: umdName,
       globals: {
         'moment-timezone': 'moment',
-        'lodash-es': '_',
       },
     },
   },
