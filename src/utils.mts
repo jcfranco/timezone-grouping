@@ -28,7 +28,7 @@ const _getDates = (startDate: any, numDays: number) => {
   const momentStart = moment(startDate);
 
   for (let i = 0; i <= numDays; i++) {
-    dateArray.push(momentStart.clone().add(i, 'days').format('YYYY-MM-DD'));
+    dateArray.push(momentStart.add(1, 'days').format('YYYY-MM-DD'));
   }
 
   return dateArray;
