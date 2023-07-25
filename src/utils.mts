@@ -46,6 +46,7 @@ const _extractContinent = (label: string) => {
 const _isRegularContinent = (continent: string) => CONTINENT_ALLOWLIST.includes(continent);
 
 export const generateMappedDB = (database: SupportedTimeZone[], startDate: string, numDays: number, dateEngine: DateEngine): MappedDb[] => {
+  const processedDates = new Map<string, any>();
   console.log(`Initializing data starting ${startDate} with ${numDays} days in the future, comparing ${database.length} timezones`);
 
   const theDates = _getDates(startDate, numDays, dateEngine);
@@ -55,7 +56,19 @@ export const generateMappedDB = (database: SupportedTimeZone[], startDate: strin
       ...d,
       continent,
       isRegularContinent: _isRegularContinent(continent),
-      dates: theDates.map(date => dateEngine.tzToUtc(date, d.label)),
+      dates: theDates.map(date => {
+        const key = `${date}-${d.label}`;
+        let utc = processedDates.get(key);
+
+        if (utc) {
+          return utc;
+        }
+
+        utc = dateEngine.tzToUtc(date, d.label);
+        processedDates.set(key, utc);
+
+        return utc;
+      }),
     }
   });
 };
