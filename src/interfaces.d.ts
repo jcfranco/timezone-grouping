@@ -43,3 +43,9 @@ export type DateEngine<DateWrapper = any> = {
   tzToUtc(isoDate: string, tz: string): DateWrapper;
   equal(date1: DateWrapper, date2: DateWrapper): boolean;
 };
+
+export type GroupTimeZonesOptions = {
+  startDate: string;
+  groupDateRange: number;
+  dateEngine: SupportedDateEngine;
+};

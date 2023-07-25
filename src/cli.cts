@@ -1,16 +1,34 @@
 #!/usr/bin/env node
 
 import { createWriteStream } from 'fs';
+import yargs, { Arguments, Argv } from 'yargs';
+import { hideBin } from 'yargs/helpers';
 
 // @ts-ignore
-import type { FinalGrouping } from "./interfaces.d.ts";
+import type { FinalGrouping, GroupTimeZonesOptions, SupportedDateEngine } from "./interfaces.d.ts";
+
+const argv: Arguments<{ start: string, days: number, engine: string}> = yargs(hideBin(process.argv)).argv;
 
 (async () => {
   const { groupTimeZones } = await import("./auto_group.mjs");
 
-  const finalGrouping: FinalGrouping[] = await groupTimeZones();
+  const options: Partial<GroupTimeZonesOptions> = {};
 
-  const fileName = `result_${Date.now()}.json`;
+  if (argv.start) {
+    options.startDate = argv.start;
+  }
+
+  if (argv.days) {
+    options.groupDateRange = argv.days;
+  }
+
+  if (argv.engine) {
+    options.dateEngine = argv.engine as SupportedDateEngine;
+  }
+
+  const finalGrouping: FinalGrouping[] = await groupTimeZones(options);
+
+  const fileName = `result_${options.dateEngine ? `${options.dateEngine}_` : "" }${Date.now()}.json`;
   console.log(`Printing ${finalGrouping.length} groups into file ./${fileName}`);
 
   const file = createWriteStream(fileName);

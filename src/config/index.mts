@@ -1,11 +1,17 @@
-import type { SupportedDateEngine } from "../interfaces.d.ts";
+import type { GroupTimeZonesOptions, SupportedDateEngine } from "../interfaces.d.ts";
 
 export { cityTranslations } from './cities.mjs';
 export { database } from "./database.mjs";
 
 const now = new Date();
-export const START_DATE = now.toISOString();
-export const NUM_DAYS = 365;
+const startDate = now.toISOString();
+const daysInYear = 365;
+const groupDateRange = daysInYear;
+const dateEngine: SupportedDateEngine = "moment";
 
-export const DATE_ENGINE: SupportedDateEngine = "moment";
+export const DEFAULT_GROUPING_OPTIONS: GroupTimeZonesOptions = {
+  startDate,
+  groupDateRange,
+  dateEngine,
+};
 
