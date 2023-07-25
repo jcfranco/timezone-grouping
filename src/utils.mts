@@ -55,12 +55,12 @@ export const generateMappedDB = (database: SupportedTimeZone[], startDate: strin
       ...d,
       continent,
       isRegularContinent: _isRegularContinent(continent),
-      dates: theDates.map(date => moment.tz(date, d.label).utc().format()),
+      dates: theDates.map(date => moment.tz(date, d.label).utc()),
     }
   });
 };
 
-export const compareDateArrs = (arr1: any[], arr2: any[]) => arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
+export const compareDateArrs = (arr1: any[], arr2: any[]) => arr1.length === arr2.length && arr1.every((value, index) => value.isSame(arr2[index]));
 
 const _extractCity = (label: string): string => {
   if (cityTranslations[label]) {
