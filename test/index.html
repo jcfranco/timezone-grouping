@@ -4,7 +4,7 @@
   <script type="module">
     import { groupTimeZones } from "../dist/timezone-grouping.esm.js";
 
-    log(JSON.stringify(groupTimeZones(), null, 2));
+    log(await groupTimeZones());
 
     function log(message) {
       output.insertAdjacentHTML("beforeend", `<div>${message}</div>`);

@@ -1,6 +1,5 @@
-import moment from 'moment-timezone';
 import { cityTranslations } from './config/index.mjs';
-import type { MappedDb, RawTimeZone, SupportedTimeZone } from "./interfaces.d.ts";
+import type { DateEngine, MappedDb, RawTimeZone, SupportedTimeZone } from "./interfaces.d.ts";
 
 const CONTINENT_ALLOWLIST = [
   'Europe',
@@ -22,13 +21,14 @@ const LABELS_DENYLIST = [
   'America/North_Dakota/Center',
 ];
 
-const _getDates = (startDate: any, numDays: number) => {
+const _getDates = (startDate: any, numDays: number, dateEngine: DateEngine) => {
   const dateArray = [];
 
-  const momentStart = moment(startDate);
+  let date = dateEngine.create(startDate);
 
   for (let i = 0; i <= numDays; i++) {
-    dateArray.push(momentStart.add(1, 'days').format('YYYY-MM-DD'));
+    date = dateEngine.increaseDay(date);
+    dateArray.push(dateEngine.format(date));
   }
 
   return dateArray;
@@ -45,22 +45,22 @@ const _extractContinent = (label: string) => {
 
 const _isRegularContinent = (continent: string) => CONTINENT_ALLOWLIST.includes(continent);
 
-export const generateMappedDB = (database: SupportedTimeZone[], startDate: string, numDays: number): MappedDb[] => {
+export const generateMappedDB = (database: SupportedTimeZone[], startDate: string, numDays: number, dateEngine: DateEngine): MappedDb[] => {
   console.log(`Initializing data starting ${startDate} with ${numDays} days in the future, comparing ${database.length} timezones`);
 
-  const theDates = _getDates(startDate, numDays);
+  const theDates = _getDates(startDate, numDays, dateEngine);
   return database.map(d => {
     const continent = _extractContinent(d.label);
     return {
       ...d,
       continent,
       isRegularContinent: _isRegularContinent(continent),
-      dates: theDates.map(date => moment.tz(date, d.label).utc()),
+      dates: theDates.map(date => dateEngine.tzToUtc(date, d.label)),
     }
   });
 };
 
-export const compareDateArrs = (arr1: any[], arr2: any[]) => arr1.length === arr2.length && arr1.every((value, index) => value.isSame(arr2[index]));
+export const compareDateArrs = (arr1: ReturnType<DateEngine["create"]>[], arr2: ReturnType<DateEngine["create"]>[], dateEngine: DateEngine) => arr1.length === arr2.length && arr1.every((value, index) => dateEngine.equal(value, arr2[index]));
 
 const _extractCity = (label: string): string => {
   if (cityTranslations[label]) {

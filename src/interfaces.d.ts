@@ -2,7 +2,7 @@ export type MappedDb = {
   label: string;
   continent: string;
   isRegularContinent: boolean;
-  dates: string[];
+  dates: Array<ReturnType<DateEngine['create']>>;
   count?: number;
   visited?: boolean;
 };
@@ -27,4 +27,19 @@ export type FinalGrouping = Omit<Grouping, 'count' | 'rawTZs'> & {
 
 export type SupportedTimeZone = {
   label: string;
+};
+
+export type SupportedDateEngine =
+  | 'moment'
+  | 'dayjs'
+  | 'luxon'
+  | 'date-fns'
+  | 'native';
+
+export type DateEngine<DateWrapper = any> = {
+  create(date: string): DateWrapper;
+  increaseDay(date: DateWrapper): DateWrapper;
+  format(date: DateWrapper): string;
+  tzToUtc(isoDate: string, tz: string): DateWrapper;
+  equal(date1: DateWrapper, date2: DateWrapper): boolean;
 };

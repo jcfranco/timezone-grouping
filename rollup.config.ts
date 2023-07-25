@@ -16,6 +16,7 @@ const bundles = [
     output: {
       file: `dist/${fileName}.esm.js`,
       format: 'esm',
+      inlineDynamicImports: true,
     },
   },
   {
@@ -23,6 +24,7 @@ const bundles = [
     output: {
       file: `dist/${fileName}.mjs`,
       format: 'esm',
+      inlineDynamicImports: true,
     },
   },
   {
@@ -30,6 +32,7 @@ const bundles = [
     output: {
       file: `dist/${fileName}.browser.mjs`,
       format: 'esm',
+      inlineDynamicImports: true,
     },
   },
   {
@@ -37,6 +40,7 @@ const bundles = [
     output: {
       file: `dist/${fileName}.browser.min.mjs`,
       format: 'esm',
+      inlineDynamicImports: true,
     },
   },
   {
@@ -48,6 +52,7 @@ const bundles = [
       globals: {
         'moment-timezone': 'moment',
       },
+      inlineDynamicImports: true,
     },
   },
   {
@@ -59,6 +64,7 @@ const bundles = [
       globals: {
         'moment-timezone': 'moment',
       },
+      inlineDynamicImports: true,
     },
   },
   {

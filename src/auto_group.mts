@@ -1,11 +1,13 @@
-import { START_DATE, NUM_DAYS, database } from './config/index.mjs';
+import { START_DATE, NUM_DAYS, database, DATE_ENGINE } from './config/index.mjs';
 import { generateMappedDB, compareDateArrs, calculateGroupLabel } from './utils.mjs';
 import type { FinalGrouping, Grouping } from "./interfaces.d.ts";
+import { getDateEngine } from "./adapters/index.mjs";
 
-export function groupTimeZones(): FinalGrouping[] {
+export async function groupTimeZones(): Promise<FinalGrouping[]> {
   const grouping: Grouping[] = [];
 
-  const mappedDB = generateMappedDB(database, START_DATE, NUM_DAYS);
+  const dateEngine = new (await getDateEngine(DATE_ENGINE))();
+  const mappedDB = generateMappedDB(database, START_DATE, NUM_DAYS, dateEngine);
 
 // we traverse the mappedDB and see if we find matches by comparing each set
 // of transformed date for that specific TZ.
@@ -44,7 +46,7 @@ export function groupTimeZones(): FinalGrouping[] {
         // 2) if the transformed dates match in both TZs
         if (
           (continent === continentJ || !isRegularContinentJ)
-          && compareDateArrs(dates, datesJ)
+          && compareDateArrs(dates, datesJ, dateEngine)
         ) {
           newGroup.rawTZs.push({ label: labelJ, count: countJ });
           newGroup.count += countJ;
