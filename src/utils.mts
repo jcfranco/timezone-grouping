@@ -50,25 +50,29 @@ export const generateMappedDB = (database: SupportedTimeZone[], startDate: strin
   console.log(`Initializing data starting ${startDate} with ${numDays} days in the future, comparing ${database.length} timezones`);
 
   const theDates = _getDates(startDate, numDays, dateEngine);
-  return database.map(d => {
-    const continent = _extractContinent(d.label);
+
+  return database.map((tz, index) => {
+    const continent = _extractContinent(tz);
+    const dates = theDates.map(date => {
+      const key = `${date}-${tz}`;
+      let utc = processedDates.get(key);
+
+      if (utc) {
+        return utc;
+      }
+
+      utc = dateEngine.tzToUtc(date, tz);
+
+      processedDates.set(key, utc);
+
+      return utc;
+    });
+
     return {
-      ...d,
+      label: tz,
       continent,
       isRegularContinent: _isRegularContinent(continent),
-      dates: theDates.map(date => {
-        const key = `${date}-${d.label}`;
-        let utc = processedDates.get(key);
-
-        if (utc) {
-          return utc;
-        }
-
-        utc = dateEngine.tzToUtc(date, d.label);
-        processedDates.set(key, utc);
-
-        return utc;
-      }),
+      dates,
     }
   });
 };

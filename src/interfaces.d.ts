@@ -25,9 +25,7 @@ export type FinalGrouping = Omit<Grouping, 'count' | 'rawTZs'> & {
   rawTZs: TimeZone[];
 };
 
-export type SupportedTimeZone = {
-  label: string;
-};
+export type SupportedTimeZone = string;
 
 export type SupportedDateEngine =
   | 'moment'

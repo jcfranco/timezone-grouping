@@ -74,7 +74,7 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
     .map(({ count, ...rest }) => ({ ...rest })); // remove count from list as not needed for the export
 
   if (debug) {
-    const missingTZs = database.map(x => finalGrouping.find(y => y.rawTZs.indexOf(x.label) > -1) ? null : x.label).filter(_ => !!_);
+    const missingTZs = database.map(tz => finalGrouping.find(y => y.rawTZs.indexOf(tz) > -1) ? null : tz).filter(_ => !!_);
 
     if (missingTZs.length !== 0) {
       throw new Error(`There are ${missingTZs.length} missing timezones: ${missingTZs}`);
