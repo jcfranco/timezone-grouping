@@ -48,4 +48,5 @@ export type GroupTimeZonesOptions = {
   startDate: string;
   groupDateRange: number;
   dateEngine: SupportedDateEngine;
+  debug: boolean;
 };

@@ -7,7 +7,7 @@ import { hideBin } from 'yargs/helpers';
 // @ts-ignore
 import type { FinalGrouping, GroupTimeZonesOptions, SupportedDateEngine } from "./interfaces.d.ts";
 
-const argv: Arguments<{ start: string, days: number, engine: string}> = yargs(hideBin(process.argv)).argv;
+const argv: Arguments<{ start: string, days: number, engine: string, debug: boolean }> = yargs(hideBin(process.argv)).argv;
 
 (async () => {
   const { groupTimeZones } = await import("./auto_group.mjs");
@@ -24,6 +24,10 @@ const argv: Arguments<{ start: string, days: number, engine: string}> = yargs(hi
 
   if (argv.engine) {
     options.dateEngine = argv.engine as SupportedDateEngine;
+  }
+
+  if (argv.debug) {
+    options.debug = argv.debug;
   }
 
   const finalGrouping: FinalGrouping[] = await groupTimeZones(options);

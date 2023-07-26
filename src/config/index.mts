@@ -13,5 +13,6 @@ export const DEFAULT_GROUPING_OPTIONS: GroupTimeZonesOptions = {
   startDate,
   groupDateRange,
   dateEngine,
+  debug: false,
 };
 
