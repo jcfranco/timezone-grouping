@@ -45,6 +45,6 @@ export type DateEngine<DateWrapper = any> = {
 export type GroupTimeZonesOptions = {
   startDate: string;
   groupDateRange: number;
-  dateEngine: SupportedDateEngine;
+  dateEngine: SupportedDateEngine | DateEngine;
   debug: boolean;
 };

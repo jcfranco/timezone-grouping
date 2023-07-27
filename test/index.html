@@ -1,13 +1,23 @@
 <!doctype html>
+<script src="../../timezone-grouping-og/config/index.js"></script>
 <body>
   <div id="output"></div>
   <script type="module">
     import { groupTimeZones } from "../dist/timezone-grouping.esm.js";
 
-    log(await groupTimeZones());
+    await groupTimeZonesWith("native");
 
-    function log(message) {
-      output.insertAdjacentHTML("beforeend", `<div>${message}</div>`);
+    await groupTimeZonesWith("moment");
+
+    await groupTimeZonesWith("date-fns");
+
+    await groupTimeZonesWith("luxon");
+
+    await groupTimeZonesWith("dayjs");
+
+    async function groupTimeZonesWith(dateEngine) {
+      const timeZoneGroups = await groupTimeZones({ dateEngine });
+      console.log(`Generated ${timeZoneGroups.length} groups`, timeZoneGroups);
     }
   </script>
 </body>

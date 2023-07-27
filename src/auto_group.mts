@@ -7,7 +7,7 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
   const { debug, groupDateRange, startDate, dateEngine } = { ...DEFAULT_GROUPING_OPTIONS, ...options } as GroupTimeZonesOptions;
   const grouping: Grouping[] = [];
 
-  const engine = new (await getDateEngine(dateEngine))();
+  const engine = typeof dateEngine === "string" ? new (await getDateEngine(dateEngine))() : dateEngine;
   console.time('groupTimeZones');
   const mappedDB = generateMappedDB(database, startDate, groupDateRange, engine);
   console.timeEnd('groupTimeZones');
