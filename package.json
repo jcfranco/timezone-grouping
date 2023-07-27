@@ -38,7 +38,6 @@
     "rollup": "^3.26.3",
     "rollup-plugin-executable": "^1.6.3",
     "rollup-plugin-hashbang": "^3.0.0",
-    "tslib": "^2.6.0",
     "typescript": "^5.1.6",
     "xo": "^0.55.0",
     "yargs": "^17.7.2"
