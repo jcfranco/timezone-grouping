@@ -1,27 +1,26 @@
-export type MappedDb = {
+export type TimeZoneMetadatum = {
   label: string;
   continent: string;
   isRegularContinent: boolean;
   dates: Array<ReturnType<DateEngine['create']>>;
-  count?: number;
   visited?: boolean;
 };
 
+export type TimeZoneMetadata = TimeZoneMetadatum[];
+
 export type RawTimeZone = {
   label: string;
-  count: number;
 };
 
 export type Grouping = {
   label: undefined | string;
   representative: string;
-  count: number;
   rawTZs: RawTimeZone[];
 };
 
 export type TimeZone = string;
 
-export type FinalGrouping = Omit<Grouping, 'count' | 'rawTZs'> & {
+export type FinalGrouping = Omit<Grouping, 'rawTZs'> & {
   rawTZs: TimeZone[];
 };
 
@@ -42,9 +41,43 @@ export type DateEngine<DateWrapper = any> = {
   equal(date1: DateWrapper, date2: DateWrapper): boolean;
 };
 
+export type TimeZoneItem = RawTimeZone;
+
+type Extendable = Record<string, any>;
+
+export type CustomTimeZoneMetadatum = TimeZoneMetadatum & Extendable;
+export type CustomTimeZoneMetadata = CustomTimeZoneMetadatum[];
+export type CustomTimeZoneItem = TimeZoneItem & Extendable;
+export type CustomGrouping = Omit<Grouping, 'rawTZs'> & {
+  rawTZs: Array<RawTimeZone & Extendable>;
+} & Extendable;
+export type CustomFinalGrouping = FinalGrouping & Extendable;
+
 export type GroupTimeZonesOptions = {
   startDate: string;
   groupDateRange: number;
   dateEngine: SupportedDateEngine | DateEngine;
   debug: boolean;
+  hooks?: Partial<{
+    onBeforeTimeZoneMetadataCreate(timeZoneItems: CustomTimeZoneItem[]): void;
+    onTimeZoneMetadataCreate(timeZoneMetadata: CustomTimeZoneMetadata): void;
+    onGroupCreate(
+      grouping: CustomGrouping,
+      timeZoneMetadatum: CustomTimeZoneMetadatum,
+    ): void;
+    onGroupTimeZoneAdd(
+      grouping: CustomGrouping,
+      tzItem: CustomTimeZoneItem,
+      timeZoneMetadatum: CustomTimeZoneMetadatum,
+    ): void;
+    onGroupAdd(grouping: CustomGrouping): void;
+    onBeforeFinalGroupCreate(group: CustomGrouping): void;
+    onFinalGroupCreate(
+      finalGrouping: CustomFinalGrouping,
+      group: FinalGroup,
+    ): void;
+    onFinalGroupingCreate(
+      grouping: CustomFinalGrouping[],
+    ): CustomFinalGrouping[];
+  }>;
 };

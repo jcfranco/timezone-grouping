@@ -6,4 +6,4 @@ declare namespace Intl {
   function supportedValuesOf(input: Key): string[];
 }
 
-export const database: SupportedTimeZone[] = Intl.supportedValuesOf("timeZone");
+export const supportedTimeZones: SupportedTimeZone[] = Intl.supportedValuesOf("timeZone");

@@ -5,7 +5,7 @@ import yargs, { Arguments, Argv } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 // @ts-ignore
-import type { FinalGrouping, GroupTimeZonesOptions, SupportedDateEngine } from "./interfaces.d.ts";
+import type { FinalGrouping, GroupTimeZonesOptions, SupportedDateEngine, TimeZoneMetadatum } from "./interfaces.d.ts";
 
 const argv: Arguments<{ start: string, days: number, engine: string, debug: boolean }> = yargs(hideBin(process.argv)).argv;
 

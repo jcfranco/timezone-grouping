@@ -1,48 +1,59 @@
-import { database, DEFAULT_GROUPING_OPTIONS } from './config/index.mjs';
-import { generateMappedDB, compareDateArrs, calculateGroupLabel } from './utils.mjs';
-import type { GroupTimeZonesOptions, FinalGrouping, Grouping } from "./interfaces.d.ts";
+import { supportedTimeZones, DEFAULT_GROUPING_OPTIONS } from './config/index.mjs';
+import { calculateGroupLabel, compareDateArrs, generateTimeZoneMetadata } from './utils.mjs';
+import type {
+  FinalGrouping,
+  Grouping,
+  GroupTimeZonesOptions,
+  TimeZoneMetadata
+} from "./interfaces.d.ts";
 import { getDateEngine } from "./adapters/index.mjs";
 
 export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): Promise<FinalGrouping[]> {
-  const { debug, groupDateRange, startDate, dateEngine } = { ...DEFAULT_GROUPING_OPTIONS, ...options } as GroupTimeZonesOptions;
+  const { debug, groupDateRange, hooks, startDate, dateEngine } = { ...DEFAULT_GROUPING_OPTIONS, ...options } as GroupTimeZonesOptions;
   const grouping: Grouping[] = [];
 
   const engine = typeof dateEngine === "string" ? new (await getDateEngine(dateEngine))() : dateEngine;
   console.time('groupTimeZones');
-  const mappedDB = generateMappedDB(database, startDate, groupDateRange, engine);
+
+  const timeZoneItems = supportedTimeZones.map(tz => ({ label: tz }));
+  hooks?.onBeforeTimeZoneMetadataCreate?.(timeZoneItems);
+
+  const timeZoneMetadata: TimeZoneMetadata = generateTimeZoneMetadata(timeZoneItems, startDate, groupDateRange, engine);
+
+  hooks?.onTimeZoneMetadataCreate?.(timeZoneMetadata);
   console.timeEnd('groupTimeZones');
 
 // we traverse the mappedDB and see if we find matches by comparing each set
 // of transformed date for that specific TZ.
-  mappedDB.forEach(elemI => {
-    const { label, continent, count = 1, dates } = elemI;
+  timeZoneMetadata.forEach(tzMetadatumI => {
+    const { label, continent, dates } = tzMetadatumI;
 
     // ignore if we visited this element already
-    if (elemI.visited) {
+    if (tzMetadatumI.visited) {
       return;
     }
 
     // mark element as already visited
-    elemI.visited = true;
+    tzMetadatumI.visited = true;
 
     // the grouped timezone that we want as a result
     const newGroup = {
       label: undefined,
-      rawTZs: [{ label, count }],
+      rawTZs: [{ label }],
       representative: label,
-      count,
     };
 
-    mappedDB
+    hooks?.onGroupCreate?.(newGroup, tzMetadatumI);
+
+    timeZoneMetadata
       .filter(_ => !_.visited) // only those that we have not yet visited
-      .forEach(elemJ => {
+      .forEach(tzMetadatumJ => {
         const {
                 label: labelJ,
                 continent: continentJ,
                 isRegularContinent: isRegularContinentJ,
-                count: countJ = 1,
                 dates: datesJ
-              } = elemJ;
+              } = tzMetadatumJ;
 
         // we define a matching TZ by:
         // 1) if both continents match (avoid grouping Antarctica with anything else)
@@ -51,35 +62,43 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
           (continent === continentJ || !isRegularContinentJ)
           && compareDateArrs(dates, datesJ, engine)
         ) {
-          newGroup.rawTZs.push({ label: labelJ, count: countJ });
-          newGroup.count += countJ;
+          const tzItem = { label: labelJ };
+          newGroup.rawTZs.push(tzItem);
+          hooks?.onGroupTimeZoneAdd?.(newGroup, tzItem, tzMetadatumJ);
 
           // mark element as already visited
-          elemJ.visited = true;
+          tzMetadatumJ.visited = true;
         }
       });
 
     grouping.push(newGroup);
+    hooks?.onGroupAdd?.(newGroup);
   });
 
 // now that we have a group, we want an easy way to find a fitting label for the group
 // which is defined as the list of the most-common 7 cities, shown in alphabetical order
-  const finalGrouping = grouping.map(x => ({
-    label: calculateGroupLabel(x.rawTZs, 7),
-    representative: x.representative,
-    count: x.count,
-    rawTZs: x.rawTZs.map(_ => _.label).sort(),
-  }))
-    .sort((a, b) => b.count - a.count)
-    .map(({ count, ...rest }) => ({ ...rest })); // remove count from list as not needed for the export
+  const finalGrouping = grouping.map(group => {
+      hooks?.onBeforeFinalGroupCreate?.(group);
+
+      const finalGrouping = {
+        label: calculateGroupLabel(group.rawTZs, 7),
+        representative: group.representative,
+        rawTZs: group.rawTZs.map(_ => _.label).sort(),
+      };
+
+      hooks?.onFinalGroupCreate?.(finalGrouping, group);
+
+      return finalGrouping;
+    })
+    .sort((a, b) => b.rawTZs.length - a.rawTZs.length);
 
   if (debug) {
-    const missingTZs = database.map(tz => finalGrouping.find(y => y.rawTZs.indexOf(tz) > -1) ? null : tz).filter(_ => !!_);
+    const missingTZs = supportedTimeZones.map(tz => finalGrouping.find(y => y.rawTZs.indexOf(tz) > -1) ? null : tz).filter(_ => !!_);
 
     if (missingTZs.length !== 0) {
       throw new Error(`There are ${missingTZs.length} missing timezones: ${missingTZs}`);
     }
   }
 
-  return finalGrouping as FinalGrouping[];
+  return hooks ? hooks.onFinalGroupingCreate?.(finalGrouping)! : finalGrouping;
 }

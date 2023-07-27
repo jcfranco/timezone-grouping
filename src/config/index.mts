@@ -1,7 +1,7 @@
 import type { GroupTimeZonesOptions, SupportedDateEngine } from "../interfaces.d.ts";
 
 export { cityTranslations } from './cities.mjs';
-export { database } from "./database.mjs";
+export { supportedTimeZones } from "./supportedTimeZones.mjs";
 
 const now = new Date();
 const startDate = now.toISOString();
