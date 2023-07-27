@@ -132,4 +132,15 @@ export default bundles.map(({input, output}) => ({
     }),
     output.chunkFileNames?.includes('.min.') && terser(),
   ],
+  onwarn(warning, warn) {
+    // Suppressing based on https://github.com/moment/luxon/issues/193
+    if (
+      warning.code === 'CIRCULAR_DEPENDENCY' &&
+      warning.message.includes('luxon')
+    ) {
+      return;
+    }
+
+    warn(warning);
+  },
 }));
