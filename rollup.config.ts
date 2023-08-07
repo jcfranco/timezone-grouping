@@ -7,28 +7,9 @@ import json from '@rollup/plugin-json';
 import executable from 'rollup-plugin-executable';
 
 const index = 'src/index.mts';
-const umdName = 'timezone-grouping';
 const fileName = 'index';
 
 const bundles = [
-  {
-    input: index,
-    output: {
-      chunkFileNames: 'chunks/[name]-[hash].[format].js',
-      dir: 'dist',
-      entryFileNames: `${fileName}.esm.js`,
-      format: 'esm',
-    },
-  },
-  {
-    input: index,
-    output: {
-      chunkFileNames: 'chunks/[name]-[hash].[format].min.js',
-      dir: 'dist',
-      entryFileNames: `${fileName}.esm.min.js`,
-      format: 'esm',
-    },
-  },
   {
     input: index,
     output: {
@@ -36,72 +17,6 @@ const bundles = [
       dir: 'dist',
       entryFileNames: `${fileName}.mjs`,
       format: 'esm',
-    },
-  },
-  {
-    input: index,
-    output: {
-      chunkFileNames: 'chunks/[name]-[hash].min.mjs',
-      dir: 'dist',
-      entryFileNames: `${fileName}.min.mjs`,
-      format: 'esm',
-    },
-  },
-  {
-    input: index,
-    output: {
-      chunkFileNames: 'chunks/[name]-[hash].browser.mjs',
-      dir: 'dist',
-      entryFileNames: `${fileName}.browser.mjs`,
-      format: 'esm',
-      inlineDynamicImports: true,
-    },
-  },
-  {
-    input: index,
-    output: {
-      chunkFileNames: 'chunks/[name]-[hash].browser.min.mjs',
-      dir: 'dist',
-      entryFileNames: `${fileName}.browser.min.mjs`,
-      format: 'esm',
-      inlineDynamicImports: true,
-    },
-  },
-  {
-    input: index,
-    output: {
-      chunkFileNames: 'chunks/[name]-[hash].[format].js',
-      dir: 'dist',
-      entryFileNames: `${fileName}.browser.[format].mjs`,
-      format: 'umd',
-      globals: {
-        'moment-timezone': 'moment',
-      },
-      inlineDynamicImports: true,
-      name: umdName,
-    },
-  },
-  {
-    input: index,
-    output: {
-      chunkFileNames: 'chunks/[name]-[hash].[format].min.js',
-      dir: 'dist',
-      entryFileNames: `${fileName}.browser.[format].min.mjs`,
-      format: 'umd',
-      name: umdName,
-      globals: {
-        'moment-timezone': 'moment',
-      },
-      inlineDynamicImports: true,
-    },
-  },
-  {
-    input: index,
-    output: {
-      chunkFileNames: 'chunks/[name]-[hash].[format]',
-      dir: 'dist',
-      entryFileNames: `${fileName}.[format]`,
-      format: 'cjs',
     },
   },
   {
