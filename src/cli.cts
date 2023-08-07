@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 
 import { createWriteStream } from 'fs';
-import yargs, { Arguments, Argv } from 'yargs';
+import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 
 // @ts-ignore
 import type { FinalGrouping, GroupTimeZonesOptions, SupportedDateEngine, TimeZoneMetadatum } from "./interfaces.d.ts";
 
-const argv: Arguments<{ start: string, days: number, engine: string, debug: boolean }> = yargs(hideBin(process.argv)).argv;
+const argv = yargs<{
+  start: string,
+  days: number,
+  engine: string,
+  debug: boolean;
+}>(hideBin(process.argv)).argv;
 
 (async () => {
   const { groupTimeZones } = await import("./auto_group.mjs");
