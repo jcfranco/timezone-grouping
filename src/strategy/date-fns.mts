@@ -7,19 +7,19 @@ export class DateFnsDateEngine implements DateEngine<Date> {
     return new Date(date);
   }
 
-  increaseDay(date: Date): Date {
+  increase(date: Date): Date {
     return add(date, { days: 1 });
   }
 
-  format(date: Date): string {
+  formatToIsoDateString(date: Date): string {
     return format(date, "yyyy-MM-dd");
   }
 
-  tzToUtc(isoDate: string, tz: string) {
+  isoToTimeZone(isoDate: string, tz: string) {
     return utcToZonedTime(isoDate, tz);
   }
 
-  equal(date1: Date, date2: Date): boolean {
+  same(date1: Date, date2: Date): boolean {
     return isEqual(date1, date2);
   }
 }

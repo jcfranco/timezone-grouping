@@ -6,7 +6,7 @@ import type {
   GroupTimeZonesOptions,
   TimeZoneMetadata
 } from "./interfaces.d.ts";
-import { getDateEngine } from "./adapters/index.mjs";
+import { getDateEngine } from "./strategy/index.mjs";
 
 export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): Promise<FinalGrouping[]> {
   const { debug, groupDateRange, hooks, startDate, dateEngine } = { ...DEFAULT_GROUPING_OPTIONS, ...options } as GroupTimeZonesOptions;

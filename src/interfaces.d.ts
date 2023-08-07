@@ -35,10 +35,10 @@ export type SupportedDateEngine =
 
 export type DateEngine<DateWrapper = any> = {
   create(date: string): DateWrapper;
-  increaseDay(date: DateWrapper): DateWrapper;
-  format(date: DateWrapper): string;
-  tzToUtc(isoDate: string, tz: string): DateWrapper;
-  equal(date1: DateWrapper, date2: DateWrapper): boolean;
+  increase(date: DateWrapper): DateWrapper;
+  formatToIsoDateString(date: DateWrapper): string;
+  isoToTimeZone(isoDate: string, timeZone: string): DateWrapper;
+  same(date1: DateWrapper, date2: DateWrapper): boolean;
 };
 
 export type TimeZoneItem = RawTimeZone;

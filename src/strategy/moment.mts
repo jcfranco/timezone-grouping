@@ -6,19 +6,19 @@ export class MomentDateEngine implements DateEngine<moment.Moment> {
     return moment(date);
   }
 
-  increaseDay(date: moment.Moment): moment.Moment {
+  increase(date: moment.Moment): moment.Moment {
     return date.add(1, 'days');
   }
 
-  format(date: moment.Moment): string {
+  formatToIsoDateString(date: moment.Moment): string {
     return date.format("YYYY-MM-DD");
   }
 
-  tzToUtc(isoDate: string, tz: string) {
+  isoToTimeZone(isoDate: string, tz: string) {
     return moment.tz(isoDate, tz);
   }
 
-  equal(date1: moment.Moment, date2: moment.Moment): boolean {
+  same(date1: moment.Moment, date2: moment.Moment): boolean {
     return date1.isSame(date2);
   }
 }

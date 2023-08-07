@@ -4,18 +4,18 @@ class NativeDateEngine implements DateEngine<Date> {
     create(date: string): Date {
         return new Date(date);
     }
-    increaseDay(date:Date): Date {
+    increase(date:Date): Date {
         const oneDayInMs = 86400000;
         return new Date(date.getTime() + oneDayInMs);
     }
-    format(date:Date) : string {
+    formatToIsoDateString(date:Date) : string {
         const year = date.getFullYear();
         const month = date.getMonth() + 1;
         const day = date.getDate();
 
         return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
     }
-    tzToUtc(isoDate:string, tz: string) : Date {
+    isoToTimeZone(isoDate:string, tz: string) : Date {
         const date = this._toDate(isoDate);
         const formatter = this._getFormatter(tz);
         const parts = formatter.formatToParts(date);
@@ -24,7 +24,7 @@ class NativeDateEngine implements DateEngine<Date> {
 
         return new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), 0, -tzOffset));
     }
-    equal(date1:Date, date2:Date): boolean {
+    same(date1:Date, date2:Date): boolean {
         return date1.getTime() === date2.getTime();
     }
 

@@ -6,19 +6,19 @@ export class LuxonDateEngine implements DateEngine<luxon.DateTime> {
     return DateTime.fromISO(date);
   }
 
-  increaseDay(date: luxon.DateTime): luxon.DateTime {
+  increase(date: luxon.DateTime): luxon.DateTime {
     return date.plus({ days: 1 });
   }
 
-  format(date: luxon.DateTime): string {
+  formatToIsoDateString(date: luxon.DateTime): string {
     return date.toFormat("yyyy-MM-dd");
   }
 
-  tzToUtc(date: string, tz: string) {
+  isoToTimeZone(date: string, tz: string) {
     return DateTime.fromISO(date, { zone: tz }).toUTC();
   }
 
-  equal(date1: luxon.DateTime, date2: luxon.DateTime): boolean {
+  same(date1: luxon.DateTime, date2: luxon.DateTime): boolean {
     return date1.equals(date2);
   }
 }

@@ -27,8 +27,8 @@ const _getDates = (startDate: any, numDays: number, dateEngine: DateEngine) => {
   let date = dateEngine.create(startDate);
 
   for (let i = 0; i <= numDays; i++) {
-    date = dateEngine.increaseDay(date);
-    dateArray.push(dateEngine.format(date));
+    date = dateEngine.increase(date);
+    dateArray.push(dateEngine.formatToIsoDateString(date));
   }
 
   return dateArray;
@@ -62,7 +62,7 @@ export const generateTimeZoneMetadata = (timeZoneItems: TimeZoneItem[], startDat
         return utc;
       }
 
-      utc = dateEngine.tzToUtc(date, label);
+      utc = dateEngine.isoToTimeZone(date, label);
 
       processedDates.set(key, utc);
 
@@ -78,7 +78,7 @@ export const generateTimeZoneMetadata = (timeZoneItems: TimeZoneItem[], startDat
   });
 };
 
-export const compareDateArrs = (arr1: ReturnType<DateEngine["create"]>[], arr2: ReturnType<DateEngine["create"]>[], dateEngine: DateEngine) => arr1.length === arr2.length && arr1.every((value, index) => dateEngine.equal(value, arr2[index]));
+export const compareDateArrs = (arr1: ReturnType<DateEngine["create"]>[], arr2: ReturnType<DateEngine["create"]>[], dateEngine: DateEngine) => arr1.length === arr2.length && arr1.every((value, index) => dateEngine.same(value, arr2[index]));
 
 const _extractCity = (label: string): string => {
   if (cityTranslations[label]) {

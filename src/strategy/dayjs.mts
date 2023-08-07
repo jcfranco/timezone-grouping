@@ -10,19 +10,19 @@ class DayJSDateEngine implements DateEngine<dayjs.Dayjs> {
     return dayjs(date);
   }
 
-  increaseDay(date: dayjs.Dayjs): dayjs.Dayjs {
+  increase(date: dayjs.Dayjs): dayjs.Dayjs {
     return date.add(1, 'days');
   }
 
-  format(date: dayjs.Dayjs): string {
+  formatToIsoDateString(date: dayjs.Dayjs): string {
     return date.format("YYYY-MM-DD");
   }
 
-  tzToUtc(isoDate: string, tz: string) {
+  isoToTimeZone(isoDate: string, tz: string) {
     return dayjs.tz(isoDate, tz);
   }
 
-  equal(date1: dayjs.Dayjs, date2: dayjs.Dayjs): boolean {
+  same(date1: dayjs.Dayjs, date2: dayjs.Dayjs): boolean {
     return date1.isSame(date2);
   }
 }
