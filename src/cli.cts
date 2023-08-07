@@ -11,6 +11,7 @@ const argv: Arguments<{ start: string, days: number, engine: string, debug: bool
 
 (async () => {
   const { groupTimeZones } = await import("./auto_group.mjs");
+  const { createDateEngine } = await import("./strategy/index.mjs");
 
   const options: Partial<GroupTimeZonesOptions> = {};
 
@@ -23,7 +24,7 @@ const argv: Arguments<{ start: string, days: number, engine: string, debug: bool
   }
 
   if (argv.engine) {
-    options.dateEngine = argv.engine as SupportedDateEngine;
+    options.dateEngine = await createDateEngine(argv.engine as SupportedDateEngine);
   }
 
   if (argv.debug) {
