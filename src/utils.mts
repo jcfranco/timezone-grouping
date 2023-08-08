@@ -104,7 +104,12 @@ export const calculateGroupLabel = (rawTZs: RawTimeZone[], max = 5) => {
         .filter(_ => !!_)
     )];
 
-  return uniqueLabels
-    .slice(0, max)
-    .join(', ');
+  return equallyDistributedSampling(uniqueLabels, max).join(', ');
+}
+
+function equallyDistributedSampling(items: string[], maxItems: number = 5) {
+  const totalLabels = items.length;
+  const stepSize = Math.max(1, Math.ceil(totalLabels / maxItems));
+
+  return items.filter((label, index) => index % stepSize === 0).slice(0, maxItems);
 }
