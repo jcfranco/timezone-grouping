@@ -10,15 +10,12 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
     throw new Error("dateEngine is required");
   }
 
-  console.time('groupTimeZones');
-
   const timeZoneItems = supportedTimeZones.map(tz => ({ label: tz }));
   hooks?.onBeforeTimeZoneMetadataCreate?.(timeZoneItems);
 
   const timeZoneMetadata: TimeZoneMetadata = generateTimeZoneMetadata(timeZoneItems, startDate, groupDateRange, dateEngine);
 
   hooks?.onTimeZoneMetadataCreate?.(timeZoneMetadata);
-  console.timeEnd('groupTimeZones');
 
 // we traverse the mappedDB and see if we find matches by comparing each set
 // of transformed date for that specific TZ.
