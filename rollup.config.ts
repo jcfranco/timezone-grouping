@@ -6,16 +6,22 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import executable from 'rollup-plugin-executable';
 
-const index = 'src/index.mts';
-const fileName = 'index';
-
 const bundles = [
   {
-    input: index,
+    input: {
+      index: 'src/index.mts',
+      /* eslint-disable @typescript-eslint/naming-convention -- need to match the file names */
+      'strategy/date-fns/index': 'src/strategy/date-fns.mts',
+      'strategy/dayjs/index': 'src/strategy/dayjs.mts',
+      'strategy/luxon/index': 'src/strategy/luxon.mts',
+      'strategy/moment/index': 'src/strategy/moment.mts',
+      'strategy/native/index': 'src/strategy/native.mts',
+      /* eslint-enable @typescript-eslint/naming-convention */
+    },
     output: {
       chunkFileNames: 'chunks/[name]-[hash].mjs',
       dir: 'dist',
-      entryFileNames: `${fileName}.mjs`,
+      entryFileNames: '[name].mjs',
       format: 'esm',
     },
   },
@@ -41,9 +47,10 @@ export default bundles.map(({input, output}) => ({
     commonjs(),
     json(),
     typescript({
-      tsconfig: input.includes('cli')
-        ? './tsconfig-cli.json'
-        : './tsconfig.json',
+      tsconfig:
+        typeof input === 'string' && input.includes('cli')
+          ? './tsconfig-cli.json'
+          : './tsconfig.json',
     }),
     output.chunkFileNames?.includes('.min.') && terser(),
   ],

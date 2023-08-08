@@ -3,7 +3,7 @@
 <body>
   <div id="output"></div>
   <script type="module">
-    import { groupTimeZones } from "../dist/timezone-grouping.esm.js";
+    import { groupTimeZones } from "../dist/index.mjs";
 
     await groupTimeZonesWith("native");
 
@@ -16,8 +16,16 @@
     await groupTimeZonesWith("dayjs");
 
     async function groupTimeZonesWith(dateEngine) {
-      const timeZoneGroups = await groupTimeZones({ dateEngine });
-      console.log(`Generated ${timeZoneGroups.length} groups`, timeZoneGroups);
+      const { DateEngine } = await import(
+        `../dist/strategy/${dateEngine}/index.mjs`
+      );
+      const timeZoneGroups = await groupTimeZones({
+        dateEngine: new DateEngine(),
+      });
+      console.log(
+        `Generated ${timeZoneGroups.length} groups (using ${dateEngine})`,
+        timeZoneGroups,
+      );
     }
   </script>
 </body>
