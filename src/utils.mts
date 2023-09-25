@@ -93,21 +93,21 @@ const _extractCity = (label: string): string => {
   return (lastIndex === -1 ? label : label.slice(lastIndex + 1)).replace(/[\W_]/g, ' ');
 }
 
-export const calculateGroupLabel = (rawTZs: RawTimeZone[], max = 5) => {
+export const getGroupLabelTimeZoneIndices = (rawTZs: RawTimeZone[], max = 5): number[] => {
   const shrinkedTZs = rawTZs.filter(({ label }) => _isRegularContinent(_extractContinent(label)));
   rawTZs = shrinkedTZs.length === 0 ? [rawTZs[0]] : shrinkedTZs;
 
   const uniqueLabels = [
     ...new Set(
       rawTZs
-        .map(({ label }) => _extractCity(label))
+        .map(({ label }, index) => index)
         .filter(_ => !!_)
     )];
 
-  return equallyDistributedSampling(uniqueLabels, max).join(', ');
+  return equallyDistributedSampling(uniqueLabels, max);
 }
 
-function equallyDistributedSampling(items: string[], maxItems: number = 5) {
+function equallyDistributedSampling(items: number[], maxItems: number = 5) {
   const totalLabels = items.length;
   const stepSize = Math.max(1, Math.ceil(totalLabels / maxItems));
 

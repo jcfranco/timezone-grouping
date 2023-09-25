@@ -1,5 +1,5 @@
 import { DEFAULT_GROUPING_OPTIONS, supportedTimeZones } from './config/index.mjs';
-import { calculateGroupLabel, compareDateArrs, generateTimeZoneMetadata } from './utils.mjs';
+import { getGroupLabelTimeZoneIndices, compareDateArrs, generateTimeZoneMetadata } from './utils.mjs';
 import type { FinalGrouping, Grouping, GroupTimeZonesOptions, TimeZoneMetadata } from "./interfaces.d.ts";
 
 export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): Promise<FinalGrouping[]> {
@@ -75,7 +75,7 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
       hooks?.onBeforeFinalGroupCreate?.(group);
 
       const finalGrouping = {
-        label: calculateGroupLabel(group.rawTZs, 7),
+        label: getGroupLabelTimeZoneIndices(group.rawTZs, 7),
         representative: group.representative,
         rawTZs: group.rawTZs.map(_ => _.label).sort(),
       };
