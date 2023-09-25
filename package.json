@@ -37,6 +37,7 @@
     "markdownlint-cli": "0.35.0",
     "moment-timezone": "0.5.43",
     "prettier": "3.0.0",
+    "release-it": "16.2.0",
     "rimraf": "5.0.1",
     "rollup": "3.26.3",
     "rollup-plugin-executable": "1.6.3",
