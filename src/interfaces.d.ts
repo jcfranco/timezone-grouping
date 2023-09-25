@@ -13,15 +13,14 @@ export type RawTimeZone = {
 };
 
 export type Grouping = {
-  label: undefined | string;
-  representative: string;
-  rawTZs: RawTimeZone[];
+  labelTZIndices: undefined | number[];
+  tzs: RawTimeZone[];
 };
 
 export type TimeZone = string;
 
-export type FinalGrouping = Omit<Grouping, 'rawTZs'> & {
-  rawTZs: TimeZone[];
+export type FinalGrouping = Omit<Grouping, 'tzs'> & {
+  tzs: TimeZone[];
 };
 
 export type SupportedTimeZone = string;
@@ -49,8 +48,8 @@ type Extendable = Record<string, any>;
 export type CustomTimeZoneMetadatum = TimeZoneMetadatum & Extendable;
 export type CustomTimeZoneMetadata = CustomTimeZoneMetadatum[];
 export type CustomTimeZoneItem = TimeZoneItem & Extendable;
-export type CustomGrouping = Omit<Grouping, 'rawTZs'> & {
-  rawTZs: Array<RawTimeZone & Extendable>;
+export type CustomGrouping = Omit<Grouping, 'tzs'> & {
+  tzs: Array<RawTimeZone & Extendable>;
 } & Extendable;
 export type CustomFinalGrouping = FinalGrouping & Extendable;
 

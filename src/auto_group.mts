@@ -31,10 +31,9 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
     tzMetadatumI.visited = true;
 
     // the grouped timezone that we want as a result
-    const newGroup = {
-      label: undefined,
-      rawTZs: [{ label }],
-      representative: label,
+    const newGroup: Grouping = {
+      labelTZIndices: undefined,
+      tzs: [{ label }],
     };
 
     hooks?.onGroupCreate?.(newGroup, tzMetadatumI);
@@ -57,7 +56,7 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
           && compareDateArrs(dates, datesJ, dateEngine)
         ) {
           const tzItem = { label: labelJ };
-          newGroup.rawTZs.push(tzItem);
+          newGroup.tzs.push(tzItem);
           hooks?.onGroupTimeZoneAdd?.(newGroup, tzItem, tzMetadatumJ);
 
           // mark element as already visited
@@ -74,20 +73,19 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
   const finalGrouping = grouping.map(group => {
       hooks?.onBeforeFinalGroupCreate?.(group);
 
-      const finalGrouping = {
-        label: getGroupLabelTimeZoneIndices(group.rawTZs, 7),
-        representative: group.representative,
-        rawTZs: group.rawTZs.map(_ => _.label).sort(),
+      const finalGrouping: FinalGrouping = {
+        labelTZIndices: getGroupLabelTimeZoneIndices(group.tzs, 7),
+        tzs: group.tzs.map(_ => _.label).sort(),
       };
 
       hooks?.onFinalGroupCreate?.(finalGrouping, group);
 
       return finalGrouping;
     })
-    .sort((a, b) => b.rawTZs.length - a.rawTZs.length);
+    .sort((a, b) => b.tzs.length - a.tzs.length);
 
   if (debug) {
-    const missingTZs = supportedTimeZones.map(tz => finalGrouping.find(y => y.rawTZs.indexOf(tz) > -1) ? null : tz).filter(_ => !!_);
+    const missingTZs = supportedTimeZones.map(tz => finalGrouping.find(y => y.tzs.indexOf(tz) > -1) ? null : tz).filter(_ => !!_);
 
     if (missingTZs.length !== 0) {
       throw new Error(`There are ${missingTZs.length} missing timezones: ${missingTZs}`);
