@@ -1,6 +1,6 @@
 {
   "name": "timezone-groups",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A JavaScript library to group time zones based on dates (DST-aware).",
   "main": "dist/timezone-grouping.umd.min.js",
   "module": "dist/timezone-grouping.esm.min.js",
