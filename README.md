@@ -23,7 +23,7 @@ npm install timezone-groups
 To generate timezone groups using the CLI, use the following command:
 
 ```bash
-./dist/cli.cjs --start "2023-07-26" --days 1 --engine moment
+timezone-groups --start "2023-07-26" --days 1 --engine moment
 ```
 
 Options:

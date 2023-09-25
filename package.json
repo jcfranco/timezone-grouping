@@ -4,8 +4,8 @@
   "description": "Iterates over a list of given timezones and auto-groups them based on real dates (respecting DST).",
   "main": "dist/timezone-grouping.umd.min.js",
   "module": "dist/timezone-grouping.esm.min.js",
-  "cli": {
-    "bin": "dist/cli.js"
+  "bin": {
+    "timezone-groups": "dist/cli.js"
   },
   "type": "module",
   "scripts": {
