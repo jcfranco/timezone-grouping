@@ -1,5 +1,5 @@
 import { cityTranslations } from './config/index.mjs';
-import type { DateEngine, TimeZoneMetadatum, RawTimeZone, SupportedTimeZone, TimeZoneItem } from "./interfaces.d.ts";
+import type { DateEngine, RawTimeZone, TimeZoneItem, TimeZoneMetadatum } from "./interfaces.d.ts";
 
 const CONTINENT_ALLOWLIST = [
   'Europe',
@@ -100,16 +100,25 @@ export const getGroupLabelTimeZoneIndices = (rawTZs: RawTimeZone[], max = 5): nu
   const uniqueLabels = [
     ...new Set(
       rawTZs
-        .map(({ label }, index) => index)
-        .filter(_ => !!_)
+        .map((_tz, index) => index)
     )];
 
   return equallyDistributedSampling(uniqueLabels, max);
 }
 
 function equallyDistributedSampling(items: number[], maxItems: number = 5) {
-  const totalLabels = items.length;
-  const stepSize = Math.max(1, Math.ceil(totalLabels / maxItems));
+  const totalItems = items.length;
 
-  return items.filter((label, index) => index % stepSize === 0).slice(0, maxItems);
+  if (totalItems <= maxItems) {
+    return items;
+  }
+
+  const numItemsToSelect = Math.min(totalItems - 2, maxItems - 2);
+  const stepSize = (totalItems - 1) / (numItemsToSelect + 1);
+
+  return [
+    items[0],
+    ...Array.from({ length: numItemsToSelect }, (_, i) => items[Math.round((i + 1) * stepSize)]),
+    items[totalItems - 1]
+  ];
 }
