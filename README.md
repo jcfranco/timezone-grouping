@@ -1,9 +1,60 @@
-# How to
+# Timezone Groups
 
-1. `npm install`
-2. (OPTIONAL) Adapt `config/database.js` based on the data that you have. (*)
-3. (OPTIONAL) Adapt `config/cities.js` in case you want translations for your city names.
-4. Run `npm run start`
-5. Result will be printed into a file `result_<now>.js`
+![npm](https://img.shields.io/npm/v/timezone-groups)
 
-*) The script allows numbers for each TZ but you can also leave it empty. They are meant for cases where you want to let them sort by, e.g., number of people that live in the TZ.
+`timezone-groups` is a versatile NPM package that allows you to effortlessly generate timezone groups in both Node.js and browser environments. It supports multiple date libraries, including the option to create and use custom ones.
+
+## Features
+
+- Compatible with Node.js and the latest two browser versions.
+- Supports various date libraries for generating groups, including the ability to use custom ones.
+- Provides a command-line interface (CLI) for easy group generation.
+
+## Installation
+
+Install the package via NPM using the following command:
+
+```bash
+npm install timezone-groups
+```
+
+## CLI Usage
+
+To generate timezone groups using the CLI, use the following command:
+
+```bash
+./dist/cli.cjs --start "2023-07-26" --days 1 --engine moment
+```
+
+Options:
+
+- `--start`: The start reference date to generate the groups (defaults to now).
+- `--days`: The number of days to consider for the DST groupings (defaults to 365).
+- `--engine`: The date library to use for generating groups. Options include "moment", "luxon", "date-fns", "dayjs", "native" (defaults to moment).
+
+The output will be a file named `timezone-groups_<engine>_timestamp.json`, which contains an array of objects with the following structure:
+
+```json
+{
+    "labelTZIndices": [0, ..., 46],
+    "tzs": ["America/Anguilla", ...,  "America/Tortola"]
+}
+```
+
+## JavaScript Function
+
+You can also use the package programmatically in your JavaScript code. Here's an example of how to do it:
+
+```javascript
+const timeZoneGroups = await groupTimeZones({
+  startDate, // The start reference date to generate the groups (defaults to now).
+  groupDateRange, // The number of days to consider for the DST groupings (defaults to 365).
+  dateEngine, // The date engine instance used to generate groups. You can use the `createDateEngine` utility to create an engine from any of the supported engine values.
+});
+```
+
+## Notes
+
+- IANA time zones are generated via `Intl.supportedValuesOf("timeZone")`.
+- Label indices can be used to provide localized labels.
+- Based on https://github.com/neogermi/timezone-grouping/ (many thanks to [@neogermi](https://github.com/neogermi)).
