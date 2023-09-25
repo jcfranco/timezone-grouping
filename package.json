@@ -15,7 +15,10 @@
     "prepare": "husky install",
     "release": "release-it"
   },
-  "author": "Sebastian Germesin (sebastian.germesin@gmail.com)",
+  "author": "JC Franco <jfranco@esri.com>",
+  "contributors": [
+    "Sebastian Germesin <sebastian.germesin@gmail.com>"
+  ],
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.3",
     "@rollup/plugin-json": "^6.0.0",
