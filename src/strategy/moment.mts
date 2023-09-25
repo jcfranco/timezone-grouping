@@ -2,6 +2,10 @@ import moment from 'moment-timezone';
 import type { DateEngine } from "../interfaces.d.ts";
 
 export class MomentDateEngine implements DateEngine<moment.Moment> {
+  get name(): string {
+    return "moment";
+  }
+
   create(date: string): moment.Moment {
     return moment(date);
   }

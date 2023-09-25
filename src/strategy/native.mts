@@ -1,6 +1,10 @@
 import type { DateEngine } from "../interfaces.d.ts";
 
 class NativeDateEngine implements DateEngine<Date> {
+    get name(): string {
+        return "native";
+    }
+
     create(date: string): Date {
         return new Date(date);
     }

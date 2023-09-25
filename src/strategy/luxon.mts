@@ -2,6 +2,10 @@ import { DateTime } from 'luxon';
 import type { DateEngine } from "../interfaces.d.ts";
 
 export class LuxonDateEngine implements DateEngine<luxon.DateTime> {
+  get name(): string {
+    return "luxon";
+  }
+
   create(date: string): luxon.DateTime {
     return DateTime.fromISO(date);
   }

@@ -6,6 +6,10 @@ import type { DateEngine } from "../interfaces.d.ts";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 class DayJSDateEngine implements DateEngine<dayjs.Dayjs> {
+  get name(): string {
+    return "dayjs";
+  }
+
   create(date: string): dayjs.Dayjs {
     return dayjs(date);
   }

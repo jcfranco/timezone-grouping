@@ -3,6 +3,10 @@ import { utcToZonedTime} from 'date-fns-tz';
 import type { DateEngine } from "../interfaces.d.ts";
 
 export class DateFnsDateEngine implements DateEngine<Date> {
+  get name(): string {
+    return "date-fns";
+  }
+
   create(date: string): Date {
     return new Date(date);
   }

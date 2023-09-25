@@ -34,6 +34,7 @@ export type SupportedDateEngine =
   | 'native';
 
 export type DateEngine<DateWrapper = any> = {
+  readonly name: string;
   create(date: string): DateWrapper;
   increase(date: DateWrapper): DateWrapper;
   formatToIsoDateString(date: DateWrapper): string;

@@ -38,7 +38,7 @@ const argv = yargs<{
 
   const finalGrouping: FinalGrouping[] = await groupTimeZones(options);
 
-  const fileName = `result_${options.dateEngine ? `${options.dateEngine}_` : ""}${Date.now()}.json`;
+  const fileName = `timezone-groups_${options.dateEngine ? `${options.dateEngine.name}_` : ""}${Date.now()}.json`;
   console.log(`Printing ${finalGrouping.length} groups into file ./${fileName}`);
 
   const file = createWriteStream(fileName);
