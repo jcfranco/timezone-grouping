@@ -10,6 +10,7 @@ const groupDateRange = daysInYear;
 
 export const DEFAULT_GROUPING_OPTIONS: GroupTimeZonesOptions = {
   startDate,
+  dateEngine: "moment",
   groupDateRange,
   debug: false,
 };

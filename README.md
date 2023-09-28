@@ -30,7 +30,7 @@ Options:
 
 - `--start`: The start reference date to generate the groups (defaults to now).
 - `--days`: The number of days to consider for the DST groupings (defaults to 365).
-- `--engine`: The date library to use for generating groups. Options include "moment", "luxon", "date-fns", "dayjs", "native" (defaults to moment).
+- `--engine`: The date library to use for generating groups. Options include "moment", "luxon", "date-fns", "dayjs", "native" (defaults to "moment").
 
 The output will be a file named `timezone-groups_<engine>_timestamp.json`, which contains an array of objects with the following structure:
 
@@ -49,7 +49,7 @@ You can also use the package programmatically in your JavaScript code. Here's an
 const timeZoneGroups = await groupTimeZones({
   startDate, // The start reference date to generate the groups (defaults to now).
   groupDateRange, // The number of days to consider for the DST groupings (defaults to 365).
-  dateEngine, // The date engine instance used to generate groups. You can use the `createDateEngine` utility to create an engine from any of the supported engine values.
+  dateEngine, // The date library to use for generating groups. Options include "moment", "luxon", "date-fns", "dayjs", "native" (defaults to "moment"). Alternatively, a date engine instance used to generate groups.
 });
 ```
 
