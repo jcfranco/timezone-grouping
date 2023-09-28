@@ -15,6 +15,9 @@
     "prepare": "husky install",
     "release": "release-it"
   },
+  "files": [
+    "dist"
+  ],
   "author": "JC Franco <jfranco@esri.com>",
   "contributors": [
     "Sebastian Germesin <sebastian.germesin@gmail.com>"
