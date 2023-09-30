@@ -45,9 +45,12 @@ const _extractContinent = (label: string) => {
 
 const _isRegularContinent = (continent: string) => CONTINENT_ALLOWLIST.includes(continent);
 
-export const generateTimeZoneMetadata = (timeZoneItems: TimeZoneItem[], startDate: string, numDays: number, dateEngine: DateEngine): TimeZoneMetadatum[] => {
+export const generateTimeZoneMetadata = (timeZoneItems: TimeZoneItem[], startDate: string, numDays: number, dateEngine: DateEngine, debug = false): TimeZoneMetadatum[] => {
   const processedDates = new Map<string, any>();
-  console.log(`Initializing data starting ${startDate} with ${numDays} days in the future, comparing ${timeZoneItems.length} timezones`);
+
+  if (debug) {
+    console.log(`Initializing data starting ${startDate} with ${numDays} days in the future, comparing ${timeZoneItems.length} timezones`);
+  }
 
   const theDates = _getDates(startDate, numDays, dateEngine);
 

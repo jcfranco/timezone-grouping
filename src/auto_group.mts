@@ -16,7 +16,7 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
   const timeZoneItems = supportedTimeZones.map(tz => ({ label: tz }));
   hooks?.onBeforeTimeZoneMetadataCreate?.(timeZoneItems);
 
-  const timeZoneMetadata: TimeZoneMetadata = generateTimeZoneMetadata(timeZoneItems, startDate, groupDateRange, effectiveDateEngine);
+  const timeZoneMetadata: TimeZoneMetadata = generateTimeZoneMetadata(timeZoneItems, startDate, groupDateRange, effectiveDateEngine, debug);
 
   hooks?.onTimeZoneMetadataCreate?.(timeZoneMetadata);
 
