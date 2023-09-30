@@ -1,3 +1,13 @@
+# 0.2.0
+
+- fix: fix package entry points (873d8b3)
+- chore: add .npmrc (5386668)
+- chore: configure release-it to update changelog (6828c5c)
+- docs: add changelog (f904cbc)
+- feat: make specifying engine optional for both Node and browser contexts (0b18b48)
+- feat: generate types (8217f02)
+- chore: clean up package contents (9c9882c)
+
 # 0.1.0
 
 - fix: fix package.json bin entry
