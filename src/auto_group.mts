@@ -1,7 +1,6 @@
 import { DEFAULT_GROUPING_OPTIONS, supportedTimeZones } from './config/index.mjs';
 import { getGroupLabelTimeZoneIndices, compareDateArrs, generateTimeZoneMetadata } from './utils.mjs';
-import type { DateEngine, FinalGrouping, Grouping, GroupTimeZonesOptions, TimeZoneMetadata } from "./interfaces.d.ts";
-import { createDateEngine } from "./strategy/index.mjs";
+import type { FinalGrouping, Grouping, GroupTimeZonesOptions, TimeZoneMetadata } from "./interfaces.d.ts";
 
 export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): Promise<FinalGrouping[]> {
   const { debug, groupDateRange, hooks, startDate, dateEngine } = { ...DEFAULT_GROUPING_OPTIONS, ...options } as GroupTimeZonesOptions;
@@ -11,12 +10,10 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
     throw new Error("dateEngine is required");
   }
 
-  const effectiveDateEngine = typeof dateEngine === "string" ? await createDateEngine(dateEngine) : dateEngine;
-
   const timeZoneItems = supportedTimeZones.map(tz => ({ label: tz }));
   hooks?.onBeforeTimeZoneMetadataCreate?.(timeZoneItems);
 
-  const timeZoneMetadata: TimeZoneMetadata = generateTimeZoneMetadata(timeZoneItems, startDate, groupDateRange, effectiveDateEngine, debug);
+  const timeZoneMetadata: TimeZoneMetadata = generateTimeZoneMetadata(timeZoneItems, startDate, groupDateRange, dateEngine, debug);
 
   hooks?.onTimeZoneMetadataCreate?.(timeZoneMetadata);
 
@@ -56,7 +53,7 @@ export async function groupTimeZones(options?: Partial<GroupTimeZonesOptions>): 
         // 2) if the transformed dates match in both TZs
         if (
           (continent === continentJ || !isRegularContinentJ)
-          && compareDateArrs(dates, datesJ, effectiveDateEngine)
+          && compareDateArrs(dates, datesJ, dateEngine)
         ) {
           const tzItem = { label: labelJ };
           newGroup.tzs.push(tzItem);

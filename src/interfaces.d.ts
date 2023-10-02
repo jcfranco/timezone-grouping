@@ -56,7 +56,7 @@ export type CustomFinalGrouping = FinalGrouping & Extendable;
 export type GroupTimeZonesOptions = {
   startDate: string;
   groupDateRange: number;
-  dateEngine?: SupportedDateEngine | DateEngine;
+  dateEngine?: DateEngine;
   debug: boolean;
   hooks?: Partial<{
     onBeforeTimeZoneMetadataCreate(timeZoneItems: CustomTimeZoneItem[]): void;

@@ -6,7 +6,6 @@ import { hideBin } from 'yargs/helpers';
 
 // @ts-ignore
 import type { FinalGrouping, GroupTimeZonesOptions, SupportedDateEngine, TimeZoneMetadatum } from "./interfaces.d.ts";
-import { DEFAULT_GROUPING_OPTIONS } from "./config/index.mjs";
 
 const argv = yargs<{
   start: string,
@@ -17,6 +16,7 @@ const argv = yargs<{
 
 (async () => {
   const { groupTimeZones } = await import("./auto_group.mjs");
+  const { createDateEngine } = await import("./strategy/index.mjs");
 
   const options: Partial<GroupTimeZonesOptions> = {};
 
@@ -28,13 +28,17 @@ const argv = yargs<{
     options.groupDateRange = argv.days;
   }
 
+  if (argv.engine) {
+    options.dateEngine = await createDateEngine(argv.engine as SupportedDateEngine);
+  }
+
   if (argv.debug) {
     options.debug = argv.debug;
   }
 
   const finalGrouping: FinalGrouping[] = await groupTimeZones(options);
 
-  const fileName = `timezone-groups_${options.dateEngine || DEFAULT_GROUPING_OPTIONS.dateEngine}_${Date.now()}.json`;
+  const fileName = `timezone-groups_${options.dateEngine ? `${options.dateEngine.name}_` : ""}${Date.now()}.json`;
   console.log(`Printing ${finalGrouping.length} groups into file ./${fileName}`);
 
   const file = createWriteStream(fileName);
