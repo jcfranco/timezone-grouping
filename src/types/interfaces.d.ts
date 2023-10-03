@@ -74,7 +74,7 @@ export type GroupTimeZonesOptions = {
     onBeforeFinalGroupCreate(group: CustomGrouping): void;
     onFinalGroupCreate(
       finalGrouping: CustomFinalGrouping,
-      group: FinalGroup,
+      group: FinalGrouping,
     ): void;
     onFinalGroupingCreate(
       grouping: CustomFinalGrouping[],
