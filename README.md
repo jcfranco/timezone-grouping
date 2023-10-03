@@ -36,7 +36,7 @@ The output will be a file named `timezone-groups_<engine>_timestamp.json`, which
 
 ```json
 {
-    "labelTZIndices": [0, ..., 46],
+    "labelTzIndices": [0, ..., 46],
     "tzs": ["America/Anguilla", ...,  "America/Tortola"]
 }
 ```

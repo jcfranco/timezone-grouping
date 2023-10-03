@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import type { DateEngine } from "../interfaces.d.ts";
+import type {DateEngine} from '../types/interfaces.d.js';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-class DayJSDateEngine implements DateEngine<dayjs.Dayjs> {
+
+class DayJsDateEngine implements DateEngine<dayjs.Dayjs> {
   get name(): string {
-    return "dayjs";
+    return 'dayjs';
   }
 
   create(date: string): dayjs.Dayjs {
@@ -19,7 +21,7 @@ class DayJSDateEngine implements DateEngine<dayjs.Dayjs> {
   }
 
   formatToIsoDateString(date: dayjs.Dayjs): string {
-    return date.format("YYYY-MM-DD");
+    return date.format('YYYY-MM-DD');
   }
 
   isoToTimeZone(isoDate: string, tz: string) {
@@ -31,4 +33,4 @@ class DayJSDateEngine implements DateEngine<dayjs.Dayjs> {
   }
 }
 
-export { DayJSDateEngine as DateEngine };
+export {DayJsDateEngine as DateEngine};

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call -- need to make sure this plugins type is available when building */
+import copy from 'rollup-plugin-copy';
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
@@ -9,19 +10,19 @@ import executable from 'rollup-plugin-executable';
 const bundles = [
   {
     input: {
-      index: 'src/index.mts',
+      index: 'src/index.ts',
       /* eslint-disable @typescript-eslint/naming-convention -- need to match the file names */
-      'strategy/date-fns/index': 'src/strategy/date-fns.mts',
-      'strategy/dayjs/index': 'src/strategy/dayjs.mts',
-      'strategy/luxon/index': 'src/strategy/luxon.mts',
-      'strategy/moment/index': 'src/strategy/moment.mts',
-      'strategy/native/index': 'src/strategy/native.mts',
+      'strategy/date-fns/index': 'src/strategy/date-fns.ts',
+      'strategy/dayjs/index': 'src/strategy/dayjs.ts',
+      'strategy/luxon/index': 'src/strategy/luxon.ts',
+      'strategy/moment/index': 'src/strategy/moment.ts',
+      'strategy/native/index': 'src/strategy/native.ts',
       /* eslint-enable @typescript-eslint/naming-convention */
     },
     output: {
-      chunkFileNames: 'chunks/[name]-[hash].mjs',
+      chunkFileNames: 'chunks/[name]-[hash].js',
       dir: 'dist',
-      entryFileNames: '[name].mjs',
+      entryFileNames: '[name].js',
       format: 'esm',
     },
   },
@@ -51,6 +52,10 @@ export default bundles.map(({input, output}) => ({
         typeof input === 'string' && input.includes('cli')
           ? './tsconfig-cli.json'
           : './tsconfig.json',
+      declaration: true,
+    }),
+    copy({
+      targets: [{src: 'src/types/interfaces.d.ts', dest: 'dist/types/'}],
     }),
     output.chunkFileNames?.includes('.min.') && terser(),
   ],

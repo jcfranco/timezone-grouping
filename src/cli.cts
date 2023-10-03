@@ -5,7 +5,7 @@ import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 
 // @ts-ignore
-import type { FinalGrouping, GroupTimeZonesOptions, SupportedDateEngine, TimeZoneMetadatum } from "./interfaces.d.ts";
+import type { FinalGrouping, GroupTimeZonesOptions, SupportedDateEngine, TimeZoneMetadatum } from "./types/interfaces.d.js";
 
 const argv = yargs<{
   start: string,
@@ -15,8 +15,8 @@ const argv = yargs<{
 }>(hideBin(process.argv)).argv;
 
 (async () => {
-  const { groupTimeZones } = await import("./auto_group.mjs");
-  const { createDateEngine } = await import("./strategy/index.mjs");
+  const { groupTimeZones } = await import("./auto-group.js");
+  const { createDateEngine } = await import("./strategy/index.js");
 
   const options: Partial<GroupTimeZonesOptions> = {};
 

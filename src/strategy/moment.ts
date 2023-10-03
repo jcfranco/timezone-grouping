@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
 import moment from 'moment-timezone';
-import type { DateEngine } from "../interfaces.d.ts";
+import type {DateEngine} from '../types/interfaces.d.js';
 
-export class MomentDateEngine implements DateEngine<moment.Moment> {
+class MomentDateEngine implements DateEngine<moment.Moment> {
   get name(): string {
-    return "moment";
+    return 'moment';
   }
 
   create(date: string): moment.Moment {
@@ -15,7 +16,7 @@ export class MomentDateEngine implements DateEngine<moment.Moment> {
   }
 
   formatToIsoDateString(date: moment.Moment): string {
-    return date.format("YYYY-MM-DD");
+    return date.format('YYYY-MM-DD');
   }
 
   isoToTimeZone(isoDate: string, tz: string) {
@@ -27,4 +28,4 @@ export class MomentDateEngine implements DateEngine<moment.Moment> {
   }
 }
 
-export { MomentDateEngine as DateEngine };
+export {MomentDateEngine as DateEngine};

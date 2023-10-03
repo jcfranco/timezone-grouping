@@ -13,7 +13,7 @@ export type RawTimeZone = {
 };
 
 export type Grouping = {
-  labelTZIndices: undefined | number[];
+  labelTzIndices: undefined | number[];
   tzs: RawTimeZone[];
 };
 
