@@ -20,6 +20,10 @@
   "contributors": [
     "Sebastian Germesin <sebastian.germesin@gmail.com>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jcfranco/timezone-groups.git"
+  },
   "devDependencies": {
     "@release-it/conventional-changelog": "7.0.2",
     "@rollup/plugin-commonjs": "25.0.3",
