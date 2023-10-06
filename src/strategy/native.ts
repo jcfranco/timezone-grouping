@@ -37,14 +37,16 @@ class NativeDateEngine implements DateEngine<Date> {
     const date = this._toDate(isoDate);
     const formatter = this._getFormatter(tz);
     const parts = formatter.formatToParts(date);
-    const [month, day, year, offset] = parts
-      .filter(({type}) => type !== 'literal')
+    const [offset] = parts
+      .filter(({type}) => type === 'timeZoneName')
       .map(({value}) => value);
     const tzOffset = this._getTimeZoneOffsetInMins(offset);
+    const tzOffsetMinutes =
+      date.getMinutes() - (date.getTimezoneOffset() - tzOffset);
 
-    return new Date(
-      Date.UTC(Number(year), Number(month) - 1, Number(day), 0, -tzOffset),
-    );
+    date.setMinutes(tzOffsetMinutes);
+
+    return date;
   }
 
   same(date1: Date, date2: Date): boolean {
