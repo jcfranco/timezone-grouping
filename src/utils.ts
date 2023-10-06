@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return */
-import {cityTranslations} from './config/index.js';
 import type {
   DateEngine,
   RawTimeZone,
@@ -19,12 +18,6 @@ const continentAllowList = new Set([
   'Antarctica',
   'Arctic',
   'Indian',
-]);
-
-const labelsDenyList = new Set([
-  'Australia/West',
-  'Australia/South',
-  'America/North_Dakota/Center',
 ]);
 
 const _getDates = (
@@ -107,22 +100,6 @@ export const compareDateArrs = (
 ) =>
   array1.length === array2.length &&
   array1.every((value, index) => dateEngine.same(value, array2[index]));
-
-const _extractCity = (label: string): string => {
-  if (cityTranslations[label]) {
-    return cityTranslations[label];
-  }
-
-  if (label.startsWith('Etc/') || labelsDenyList.has(label)) {
-    return label;
-  }
-
-  const lastIndex = label.lastIndexOf('/');
-  return (lastIndex === -1 ? label : label.slice(lastIndex + 1)).replaceAll(
-    /[\W_]/g,
-    ' ',
-  );
-};
 
 export const getGroupLabelTimeZoneIndices = (
   rawTZs: RawTimeZone[],
