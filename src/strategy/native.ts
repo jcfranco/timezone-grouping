@@ -54,12 +54,7 @@ class NativeDateEngine implements DateEngine<Date> {
   }
 
   private _toDate(isoDate: string): Date {
-    const dateParts = isoDate.split('-');
-    const year = Number(dateParts[0]);
-    const month = Number(dateParts[1]) - 1;
-    const day = Number(dateParts[2]);
-
-    return new Date(year, month, day);
+    return new Date(isoDate);
   }
 
   private _getFormatter(tz: string) {
