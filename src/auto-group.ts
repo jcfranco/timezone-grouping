@@ -92,9 +92,11 @@ export async function groupTimeZones(
     .map((group) => {
       hooks?.onBeforeFinalGroupCreate?.(group);
 
+      group.tzs = group.tzs.sort((a, b) => a.label.localeCompare(b.label));
+
       const finalGrouping: FinalGrouping = {
         labelTzIndices: getGroupLabelTimeZoneIndices(group.tzs, 7),
-        tzs: group.tzs.map((_) => _.label).sort(),
+        tzs: group.tzs.map((_) => _.label),
       };
 
       hooks?.onFinalGroupCreate?.(finalGrouping, group);

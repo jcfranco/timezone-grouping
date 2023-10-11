@@ -108,11 +108,14 @@ export const getGroupLabelTimeZoneIndices = (
   const shrinkedTzs = rawTZs.filter(({label}) =>
     _isRegularContinent(_extractContinent(label)),
   );
-  rawTZs = shrinkedTzs.length === 0 ? [rawTZs[0]] : shrinkedTzs;
 
-  const uniqueLabels = [...new Set(rawTZs.map((_tz, index) => index))];
+  if (shrinkedTzs.length === 0) {
+    return [0];
+  }
 
-  return equallyDistributedSampling(uniqueLabels, max);
+  const validLabels = shrinkedTzs.map((tz) => rawTZs.indexOf(tz));
+
+  return equallyDistributedSampling(validLabels, max);
 };
 
 function equallyDistributedSampling(items: number[], maxItems = 5) {
