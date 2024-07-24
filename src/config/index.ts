@@ -6,9 +6,12 @@ const now = new Date();
 const startDate = now.toISOString();
 const daysInYear = 365;
 const groupDateRange = daysInYear;
+const debug = false;
+const groupBy = 'timezone';
 
 export const defaultGroupingOptions: GroupTimeZonesOptions = {
-  startDate,
+  debug,
+  groupBy,
   groupDateRange,
-  debug: false,
+  startDate,
 };

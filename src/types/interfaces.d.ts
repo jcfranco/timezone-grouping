@@ -13,13 +13,25 @@ export type RawTimeZone = {
 };
 
 export type Grouping = {
-  labelTzIndices: undefined | number[];
+  region?: undefined | string;
+  labelTzIndices?: undefined | number[];
+  tzs: RawTimeZone[];
+};
+
+export type RegionGrouping = {
+  region: string;
   tzs: RawTimeZone[];
 };
 
 export type TimeZone = string;
 
 export type FinalGrouping = Omit<Grouping, 'tzs'> & {
+  tzs: TimeZone[];
+};
+
+export type GroupBy = 'timezone' | 'region';
+
+export type FinalRegionGrouping = Omit<Grouping, 'tzs'> & {
   tzs: TimeZone[];
 };
 
@@ -58,6 +70,7 @@ export type GroupTimeZonesOptions = {
   groupDateRange: number;
   dateEngine?: DateEngine;
   debug: boolean;
+  groupBy: GroupBy;
   hooks?: Partial<{
     onBeforeTimeZoneMetadataCreate(timeZoneItems: CustomTimeZoneItem[]): void;
     onTimeZoneMetadataCreate(timeZoneMetadata: CustomTimeZoneMetadata): void;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call -- need to make sure this plugins type is available when building */
 import copy from 'rollup-plugin-copy';
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
@@ -20,9 +19,9 @@ const bundles: Array<{input: InputOption; output: OutputOptions}> = [
       /* eslint-enable @typescript-eslint/naming-convention */
     },
     output: {
-      chunkFileNames: 'chunks/[name]-[hash].js',
+      chunkFileNames: 'chunks/[name]-[hash].mjs',
       dir: 'dist',
-      entryFileNames: '[name].js',
+      entryFileNames: '[name].mjs',
       format: 'esm',
     },
   },

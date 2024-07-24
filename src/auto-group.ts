@@ -8,13 +8,14 @@ import type {
   FinalGrouping,
   Grouping,
   GroupTimeZonesOptions,
+  TimeZone,
   TimeZoneMetadata,
 } from './types/interfaces.d.js';
 
 export async function groupTimeZones(
   options?: Partial<GroupTimeZonesOptions>,
 ): Promise<FinalGrouping[]> {
-  const {debug, groupDateRange, hooks, startDate, dateEngine} = {
+  const {debug, groupBy, groupDateRange, hooks, startDate, dateEngine} = {
     ...defaultGroupingOptions,
     ...options,
   };
@@ -30,80 +31,146 @@ export async function groupTimeZones(
   const timeZoneMetadata: TimeZoneMetadata = generateTimeZoneMetadata(
     timeZoneItems,
     startDate,
-    groupDateRange,
-    dateEngine,
+    groupDateRange, // Could skip for region groups
+    dateEngine, // Could skip for region groups
     debug,
   );
 
   hooks?.onTimeZoneMetadataCreate?.(timeZoneMetadata);
 
-  // We traverse the mappedDB and see if we find matches by comparing each set
-  // of transformed date for that specific TZ.
-  for (const tzMetadatumI of timeZoneMetadata) {
-    const {label, continent, dates} = tzMetadatumI;
+  let finalGrouping: Array<Omit<Grouping, 'tzs'> & {tzs: TimeZone[]}>;
 
-    // ignore if we visited this element already
-    if (tzMetadatumI.visited) {
-      continue;
-    }
+  if (groupBy === 'timezone') {
+    // We traverse the mappedDB and see if we find matches by comparing each set
+    // of transformed date for that specific TZ.
+    for (const tzMetadatumI of timeZoneMetadata) {
+      const {label, continent, dates} = tzMetadatumI;
 
-    // Mark element as already visited
-    tzMetadatumI.visited = true;
-
-    // The grouped timezone that we want as a result
-    const newGroup: Grouping = {
-      labelTzIndices: undefined,
-      tzs: [{label}],
-    };
-
-    hooks?.onGroupCreate?.(newGroup, tzMetadatumI);
-
-    for (const tzMetadatumJ of timeZoneMetadata.filter((_) => !_.visited)) {
-      const {
-        label: labelJ,
-        continent: continentJ,
-        isRegularContinent: isRegularContinentJ,
-        dates: datesJ,
-      } = tzMetadatumJ;
-
-      // We define a matching TZ by:
-      // 1) if both continents match (avoid grouping Antarctica with anything else)
-      // 2) if the transformed dates match in both TZs
-      if (
-        (continent === continentJ || !isRegularContinentJ) &&
-        compareDateArrs(dates, datesJ, dateEngine)
-      ) {
-        const tzItem = {label: labelJ};
-        newGroup.tzs.push(tzItem);
-        hooks?.onGroupTimeZoneAdd?.(newGroup, tzItem, tzMetadatumJ);
-
-        // Mark element as already visited
-        tzMetadatumJ.visited = true;
+      // ignore if we visited this element already
+      if (tzMetadatumI.visited) {
+        continue;
       }
-    }
 
-    grouping.push(newGroup);
-    hooks?.onGroupAdd?.(newGroup);
-  }
+      // Mark element as already visited
+      tzMetadatumI.visited = true;
 
-  // Now that we have a group, we want an easy way to find a fitting label for the group
-  // which is defined as the list of the most-common 7 cities, shown in alphabetical order
-  const finalGrouping = grouping
-    .map((group) => {
-      hooks?.onBeforeFinalGroupCreate?.(group);
-
-      group.tzs = group.tzs.sort((a, b) => a.label.localeCompare(b.label));
-
-      const finalGrouping: FinalGrouping = {
-        labelTzIndices: getGroupLabelTimeZoneIndices(group.tzs, 7),
-        tzs: group.tzs.map((_) => _.label),
+      // The grouped timezone that we want as a result
+      const newGroup: Grouping = {
+        labelTzIndices: undefined,
+        tzs: [{label}],
       };
 
-      hooks?.onFinalGroupCreate?.(finalGrouping, group);
+      hooks?.onGroupCreate?.(newGroup, tzMetadatumI);
 
-      return finalGrouping;
-    })
-    .sort((a, b) => b.tzs.length - a.tzs.length);
+      for (const tzMetadatumJ of timeZoneMetadata.filter((_) => !_.visited)) {
+        const {
+          label: labelJ,
+          continent: continentJ,
+          isRegularContinent: isRegularContinentJ,
+          dates: datesJ,
+        } = tzMetadatumJ;
+
+        // We define a matching TZ by:
+        // 1) if both continents match (avoid grouping Antarctica with anything else)
+        // 2) if the transformed dates match in both TZs
+        if (
+          (continent === continentJ || !isRegularContinentJ) &&
+          compareDateArrs(dates, datesJ, dateEngine)
+        ) {
+          const tzItem = {label: labelJ};
+          newGroup.tzs.push(tzItem);
+          hooks?.onGroupTimeZoneAdd?.(newGroup, tzItem, tzMetadatumJ);
+
+          // Mark element as already visited
+          tzMetadatumJ.visited = true;
+        }
+      }
+
+      grouping.push(newGroup);
+      hooks?.onGroupAdd?.(newGroup);
+    }
+
+    // Now that we have a group, we want an easy way to find a fitting label for the group
+    // which is defined as the list of the most-common 7 cities, shown in alphabetical order
+    finalGrouping = grouping
+      .map((group) => {
+        hooks?.onBeforeFinalGroupCreate?.(group);
+
+        group.tzs = group.tzs.sort((a, b) => a.label.localeCompare(b.label));
+
+        const finalGrouping: FinalGrouping = {
+          labelTzIndices: getGroupLabelTimeZoneIndices(group.tzs, 7),
+          tzs: group.tzs.map((_) => _.label),
+        };
+
+        hooks?.onFinalGroupCreate?.(finalGrouping, group);
+
+        return finalGrouping;
+      })
+      .sort((a, b) => b.tzs.length - a.tzs.length);
+  } else {
+    for (const tzMetadatum of timeZoneMetadata) {
+      const {label, continent, isRegularContinent} = tzMetadatum;
+
+      // ignore if we visited this element already
+      if (tzMetadatum.visited) {
+        continue;
+      }
+
+      tzMetadatum.visited = true;
+
+      if (!isRegularContinent) {
+        tzMetadatum.visited = true;
+        continue;
+      }
+
+      // The grouped timezone that we want as a result
+      const newGroup: Grouping = {
+        region: continent,
+        tzs: [{label}],
+      };
+
+      hooks?.onGroupCreate?.(newGroup, tzMetadatum);
+
+      for (const tzMetadatumJ of timeZoneMetadata.filter((_) => !_.visited)) {
+        const {
+          label: labelJ,
+          continent: continentJ,
+          isRegularContinent: isRegularContinentJ,
+        } = tzMetadatumJ;
+
+        if (continent === continentJ) {
+          const tzItem = {label: labelJ};
+          newGroup.tzs.push(tzItem);
+          hooks?.onGroupTimeZoneAdd?.(newGroup, tzItem, tzMetadatumJ);
+
+          tzMetadatumJ.visited = true;
+        }
+      }
+
+      grouping.push(newGroup);
+      hooks?.onGroupAdd?.(newGroup);
+    }
+
+    // Now that we have a group, we want an easy way to find a fitting label for the group
+    // which is defined as the list of the most-common 7 cities, shown in alphabetical order
+    finalGrouping = grouping
+      .map((group) => {
+        hooks?.onBeforeFinalGroupCreate?.(group);
+
+        group.tzs = group.tzs.sort((a, b) => a.label.localeCompare(b.label));
+
+        const finalGrouping: FinalGrouping = {
+          region: group.region,
+          tzs: group.tzs.map((_) => _.label),
+        };
+
+        hooks?.onFinalGroupCreate?.(finalGrouping, group);
+
+        return finalGrouping;
+      })
+      .sort((a, b) => b.tzs.length - a.tzs.length);
+  }
 
   if (debug) {
     const missingTzs = supportedTimeZones

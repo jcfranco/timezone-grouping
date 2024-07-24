@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "@typescript-eslint/no-unsafe-call": "off",
+    "n/file-extension-in-import": "off"
+  }
+}
