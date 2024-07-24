@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
 import {add, format, isEqual} from 'date-fns';
-import {utcToZonedTime} from 'date-fns-tz';
-import type {DateEngine} from '../types/interfaces.d.js';
+import {toZonedTime} from 'date-fns-tz';
+import type {DateEngine} from '../types/interfaces.d';
 
 class DateFnsDateEngine implements DateEngine<Date> {
   get name(): string {
@@ -21,7 +21,7 @@ class DateFnsDateEngine implements DateEngine<Date> {
   }
 
   isoToTimeZone(isoDate: string, tz: string) {
-    return utcToZonedTime(isoDate, tz);
+    return toZonedTime(isoDate, tz);
   }
 
   same(date1: Date, date2: Date): boolean {

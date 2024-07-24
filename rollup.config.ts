@@ -29,7 +29,6 @@ const bundles = [
   {
     input: 'src/cli.cts',
     output: {
-      banner: '#!/usr/bin/env node\n\n',
       file: `dist/cli.cjs`,
       format: 'cjs',
       plugins: [executable()],
