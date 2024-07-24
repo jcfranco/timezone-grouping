@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
 import {add, format, isEqual} from 'date-fns';
 import {toZonedTime} from 'date-fns-tz';
-import type {DateEngine} from '../types/interfaces.d';
+import type {DateEngine} from '../types/interfaces.d.ts';
 
 class DateFnsDateEngine implements DateEngine<Date> {
   get name(): string {
