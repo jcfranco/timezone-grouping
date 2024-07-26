@@ -1,6 +1,5 @@
 import type {GroupTimeZonesOptions} from '../types/interfaces.d.js';
 
-export {cityTranslations} from './cities.js';
 export {supportedTimeZones} from './supported-time-zones.js';
 
 const now = new Date();
