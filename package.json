@@ -20,6 +20,7 @@
   "contributors": [
     "Sebastian Germesin <sebastian.germesin@gmail.com>"
   ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/jcfranco/timezone-groups.git"
