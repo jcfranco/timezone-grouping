@@ -5,9 +5,9 @@ import terser from '@rollup/plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import executable from 'rollup-plugin-executable';
+import type {InputOption, OutputOptions, MergedRollupOptions} from 'rollup';
 
-const bundles = [
+const bundles: Array<{input: InputOption; output: OutputOptions}> = [
   {
     input: {
       index: 'src/index.ts',
@@ -26,20 +26,11 @@ const bundles = [
       format: 'esm',
     },
   },
-  {
-    input: 'src/cli.cts',
-    output: {
-      file: `dist/cli.cjs`,
-      format: 'cjs',
-      plugins: [executable()],
-      inlineDynamicImports: true,
-    },
-  },
 ];
 
-export default bundles.map(({input, output}) => ({
+export default bundles.map<MergedRollupOptions>(({input, output}) => ({
   input,
-  output,
+  output: [output],
   plugins: [
     resolve({
       moduleDirectories: ['node_modules'],
@@ -47,16 +38,13 @@ export default bundles.map(({input, output}) => ({
     commonjs(),
     json(),
     typescript({
-      tsconfig:
-        typeof input === 'string' && input.includes('cli')
-          ? './tsconfig-cli.json'
-          : './tsconfig.json',
       declaration: true,
     }),
     copy({
       targets: [{src: 'src/types/interfaces.d.ts', dest: 'dist/types/'}],
     }),
-    output.chunkFileNames?.includes('.min.') && terser(),
+    // @ts-expect-error -- falsy plugins are not typed correctly in rollup
+    (output.chunkFileNames as string)?.includes('.min.') && terser(),
   ],
   onwarn(warning, warn) {
     // Suppressing based on https://github.com/moment/luxon/issues/193
