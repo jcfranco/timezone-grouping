@@ -1,6 +1,6 @@
-import type {SupportedTimeZone} from '../types/interfaces.d.js';
+import type {SupportedTimeZone} from '../types/interfaces.mjs';
 
-export const supportedTimeZones: SupportedTimeZone[] = (() => {
+export const timeZones: SupportedTimeZone[] = (() => {
   const platformTimeZones = Intl.supportedValuesOf('timeZone');
 
   // Not all browsers include these time zones, so we add them to ensure consistent groups

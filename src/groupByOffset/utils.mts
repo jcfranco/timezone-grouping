@@ -4,21 +4,8 @@ import type {
   RawTimeZone,
   TimeZoneItem,
   TimeZoneMetadatum,
-} from './types/interfaces.d.js';
-
-const continentAllowList = new Set([
-  'Europe',
-  'Asia',
-  'America',
-  'America/Argentina',
-  'Africa',
-  'Australia',
-  'Pacific',
-  'Atlantic',
-  'Antarctica',
-  'Arctic',
-  'Indian',
-]);
+} from '../types/interfaces.mjs';
+import {extractContinent, isRegularContinent} from '../utils/continent.mjs';
 
 const _getDates = (
   startDate: any,
@@ -37,38 +24,19 @@ const _getDates = (
   return dateArray;
 };
 
-const _extractContinent = (label: string) => {
-  if (label.includes('Istanbul')) {
-    return 'Europe';
-  }
-
-  const lastIndex = label.lastIndexOf('/');
-  return lastIndex === -1 ? label : label.slice(0, lastIndex);
-};
-
-const _isRegularContinent = (continent: string) =>
-  continentAllowList.has(continent);
-
 export const generateTimeZoneMetadata = (
   timeZoneItems: TimeZoneItem[],
   startDate: string,
   numberDays: number,
   dateEngine: DateEngine,
-  debug = false,
 ): TimeZoneMetadatum[] => {
   const processedDates = new Map<string, any>();
-
-  if (debug) {
-    console.log(
-      `Initializing data starting ${startDate} with ${numberDays} days in the future, comparing ${timeZoneItems.length} timezones`,
-    );
-  }
 
   const theDates = _getDates(startDate, numberDays, dateEngine);
 
   return timeZoneItems.map((tzItem) => {
-    const label = tzItem.label;
-    const continent = _extractContinent(label);
+    const {label} = tzItem;
+    const continent = extractContinent(label);
     const dates = theDates.map((date) => {
       const key = `${date}-${label}`;
       let utc = processedDates.get(key);
@@ -87,7 +55,7 @@ export const generateTimeZoneMetadata = (
     return {
       ...tzItem,
       continent,
-      isRegularContinent: _isRegularContinent(continent),
+      isRegularContinent: isRegularContinent(continent),
       dates,
     };
   });
@@ -106,7 +74,7 @@ export const getGroupLabelTimeZoneIndices = (
   max = 5,
 ): number[] => {
   const shrinkedTzs = rawTZs.filter(({label}) =>
-    _isRegularContinent(_extractContinent(label)),
+    isRegularContinent(extractContinent(label)),
   );
 
   if (shrinkedTzs.length === 0) {

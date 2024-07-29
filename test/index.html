@@ -2,7 +2,12 @@
 <body>
   <div id="output"></div>
   <script type="module">
-    import { groupTimeZones } from "../dist/index.mjs";
+    import { groupByOffset } from "../dist/groupByOffset/index.mjs";
+    import { groupByRegion } from "../dist/groupByRegion/index.mjs";
+    import { groupByName } from "../dist/groupByName/index.mjs";
+
+    console.log(await groupByName(), "Name");
+    console.log(await groupByRegion(), "REGION");
 
     await groupTimeZonesWith("native");
 
@@ -12,13 +17,13 @@
 
     await groupTimeZonesWith("luxon");
 
-    await groupTimeZonesWith("dayjs");
+    // await groupTimeZonesWith("dayjs");
 
     async function groupTimeZonesWith(dateEngine) {
       const { DateEngine } = await import(
-        `../dist/strategy/${dateEngine}/index.mjs`
+        `../dist/groupByOffset/strategy/${dateEngine}/index.mjs`
       );
-      const timeZoneGroups = await groupTimeZones({
+      const timeZoneGroups = await groupByOffset({
         dateEngine: new DateEngine(),
       });
       console.log(

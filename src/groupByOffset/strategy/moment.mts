@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
 import moment from 'moment-timezone';
-import type {DateEngine} from '../types/interfaces.d.js';
+import type {DateEngine} from '../../types/interfaces.mjs';
 
 class MomentDateEngine implements DateEngine<moment.Moment> {
   get name(): string {

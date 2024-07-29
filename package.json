@@ -2,8 +2,6 @@
   "name": "timezone-groups",
   "version": "0.8.0",
   "description": "A JavaScript library to group time zones based on dates (DST-aware).",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
   "type": "module",
   "scripts": {
     "clean": "rimraf dist",
@@ -12,8 +10,35 @@
     "prepare": "husky install",
     "release": "release-it"
   },
+  "exports": {
+    "./groupByName": {
+      "import": "./dist/groupByName/index.mjs",
+      "types": "./dist/groupByName/index.d.mts"
+    },
+    "./groupByOffset": {
+      "import": "./dist/groupByOffset/index.mjs",
+      "types": "./dist/groupByOffset/index.d.mts"
+    },
+    "./groupByRegion": {
+      "import": "./dist/groupByRegion/index.mjs",
+      "types": "./dist/groupByRegion/index.d.mts"
+    },
+    "./utils/continent": {
+      "import": "./dist/utils/continent.mjs",
+      "types": "./dist/utils/continent.d.mts"
+    },
+    "./utils/country": {
+      "import": "./dist/utils/country.mjs",
+      "types": "./dist/utils/country.d.mts"
+    },
+    "./utils/time-zones": {
+      "import": "./dist/utils/time-zones.mjs",
+      "types": "./dist/utils/time-zones.d.mts"
+    }
+  },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE"
   ],
   "author": "JC Franco <jfranco@esri.com>",
   "contributors": [

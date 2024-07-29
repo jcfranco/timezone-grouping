@@ -1,4 +1,4 @@
-import type {DateEngine} from '../types/interfaces.d.js';
+import type {DateEngine} from '../../types/interfaces.mjs';
 
 class NativeDateEngine implements DateEngine<Date> {
   private readonly _formatterCache = new Map<string, Intl.DateTimeFormat>();

@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
 import {DateTime} from 'luxon';
-import type {DateEngine} from '../types/interfaces.d.js';
+import type {DateEngine} from '../../types/interfaces.mjs';
 
 class LuxonDateEngine implements DateEngine<luxon.DateTime> {
   get name(): string {

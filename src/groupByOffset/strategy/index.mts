@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-await-expression-member */
-import type {SupportedDateEngine} from '../types/interfaces.d.js';
+import type {SupportedDateEngine} from '../../types/interfaces.mjs';
 
 export async function createDateEngine(
   supportedDateEngine: SupportedDateEngine,
@@ -9,31 +9,31 @@ export async function createDateEngine(
 
   switch (supportedDateEngine) {
     case 'dayjs': {
-      DateEngine = (await import('./dayjs.js')).DateEngine;
+      DateEngine = (await import('./dayjs.mjs')).DateEngine;
 
       break;
     }
 
     case 'date-fns': {
-      DateEngine = (await import('./date-fns.js')).DateEngine;
+      DateEngine = (await import('./date-fns.mjs')).DateEngine;
 
       break;
     }
 
     case 'luxon': {
-      DateEngine = (await import('./luxon.js')).DateEngine;
+      DateEngine = (await import('./luxon.mjs')).DateEngine;
 
       break;
     }
 
     case 'native': {
-      DateEngine = (await import('./native.js')).DateEngine;
+      DateEngine = (await import('./native.mjs')).DateEngine;
 
       break;
     }
 
     case 'moment': {
-      DateEngine = (await import('./moment.js')).DateEngine;
+      DateEngine = (await import('./moment.mjs')).DateEngine;
 
       break;
     }

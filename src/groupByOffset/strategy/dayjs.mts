@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import dayjs from 'dayjs/esm';
 import utc from 'dayjs/esm/plugin/utc';
 import timezone from 'dayjs/esm/plugin/timezone';
-import type {DateEngine} from '../types/interfaces.d.ts';
+import type {DateEngine} from '../../types/interfaces.mts';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

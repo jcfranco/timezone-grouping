@@ -19,8 +19,10 @@ npm install timezone-groups
 
 ## Usage
 
+### `groupByOffset`
+
 ```javascript
-const timeZoneGroups = await groupTimeZones({
+const timeZoneGroups = await groupByOffset({
   startDate, // The start reference date to generate the groups (defaults to now).
   groupDateRange, // The number of days to consider for the DST groupings (defaults to 365).
   dateEngine, // The date engine instance used to generate groups. You can use the `createDateEngine` utility to create an engine from any of the supported engine values. Alternatively, a custom date engine instance used to generate groups.
@@ -31,8 +33,48 @@ console.log(timeZoneGroups);
 // Output:
 // [
 //   {
-//     "labelTzIndices": [0, ..., 46],
+//     "labelIdx": [0, ..., 46],
 //     "tzs": ["America/Anguilla", ...,  "America/Tortola"]
+//   },
+// ...
+// ]
+```
+
+### `groupByName`
+
+```javascript
+const timeZoneGroups = await groupByName();
+
+console.log(timeZoneGroups);
+
+// Output:
+// [
+//   {
+//     "label": "Africa/Abidjan",
+//   },
+//   {
+//     "label": "Africa/Accra",
+//   },
+// ...
+// ]
+```
+
+### `groupByRegion`
+
+```javascript
+const timeZoneGroups = await groupByRegion();
+
+console.log(timeZoneGroups);
+
+// Output:
+// [
+//   {
+//     "label": "Africa",
+//     "tzs": ["Africa/Abidjan", ...,  "Africa/Windhoek"]
+//   },
+//   {
+//     "label": "America",
+//     "tzs": ["America/Adak", ...,  "America/Yakutat"]
 //   },
 // ...
 // ]
