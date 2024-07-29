@@ -1,6 +1,6 @@
 {
   "name": "timezone-groups",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "A JavaScript library to group time zones based on dates (DST-aware).",
   "type": "module",
   "scripts": {
