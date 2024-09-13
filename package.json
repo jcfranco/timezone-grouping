@@ -19,6 +19,30 @@
       "import": "./dist/groupByOffset/index.mjs",
       "types": "./dist/groupByOffset/index.d.mts"
     },
+    "./groupByOffset/strategy": {
+      "import": "./dist/groupByOffset/strategy/index.mjs",
+      "types": "./dist/groupByOffset/strategy/index.d.mts"
+    },
+    "./groupByOffset/strategy/dayjs": {
+      "import": "./dist/groupByOffset/strategy/dayjs/index.mjs",
+      "types": "./dist/groupByOffset/strategy/dayjs.d.mts"
+    },
+    "./groupByOffset/strategy/date-fns": {
+      "import": "./dist/groupByOffset/strategy/date-fns/index.mjs",
+      "types": "./dist/groupByOffset/strategy/date-fns.d.mts"
+    },
+    "./groupByOffset/strategy/luxon": {
+      "import": "./dist/groupByOffset/strategy/luxon/index.mjs",
+      "types": "./dist/groupByOffset/strategy/luxon.d.mts"
+    },
+    "./groupByOffset/strategy/native": {
+      "import": "./dist/groupByOffset/strategy/native/index.mjs",
+      "types": "./dist/groupByOffset/strategy/native.d.mts"
+    },
+    "./groupByOffset/strategy/moment": {
+      "import": "./dist/groupByOffset/strategy/moment/index.mjs",
+      "types": "./dist/groupByOffset/strategy/moment.d.mts"
+    },
     "./groupByRegion": {
       "import": "./dist/groupByRegion/index.mjs",
       "types": "./dist/groupByRegion/index.d.mts"
