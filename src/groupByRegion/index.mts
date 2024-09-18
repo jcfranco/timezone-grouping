@@ -8,7 +8,7 @@ export async function groupByRegion() {
   const timeZoneMetadata = generateTimeZoneMetadata(timeZoneItems);
 
   for (const tzMetadatum of timeZoneMetadata) {
-    const {label, continent, isRegularContinent} = tzMetadatum;
+    const {label, continent} = tzMetadatum;
 
     if (tzMetadatum.visited) {
       continue;
@@ -16,22 +16,13 @@ export async function groupByRegion() {
 
     tzMetadatum.visited = true;
 
-    if (!isRegularContinent) {
-      tzMetadatum.visited = true;
-      continue;
-    }
-
     const newGroup: LabelGrouping = {
       label: continent,
       tzs: [{label}],
     };
 
     for (const tzMetadatumJ of timeZoneMetadata.filter((_) => !_.visited)) {
-      const {
-        label: labelJ,
-        continent: continentJ,
-        isRegularContinent: isRegularContinentJ,
-      } = tzMetadatumJ;
+      const {label: labelJ, continent: continentJ} = tzMetadatumJ;
 
       if (continent === continentJ) {
         const tzItem = {label: labelJ};

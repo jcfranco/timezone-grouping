@@ -47,9 +47,9 @@
       "import": "./dist/groupByRegion/index.mjs",
       "types": "./dist/groupByRegion/index.d.mts"
     },
-    "./utils/continent": {
-      "import": "./dist/utils/continent.mjs",
-      "types": "./dist/utils/continent.d.mts"
+    "./utils/region": {
+      "import": "./dist/utils/region.mjs",
+      "types": "./dist/utils/region.d.mts"
     },
     "./utils/country": {
       "import": "./dist/utils/country.mjs",

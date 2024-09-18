@@ -5,7 +5,7 @@ import type {
   TimeZoneItem,
   TimeZoneMetadatum,
 } from '../types/interfaces.mjs';
-import {extractContinent, isRegularContinent} from '../utils/continent.mjs';
+import {extractRegion, global} from '../utils/region.mjs';
 
 const _getDates = (
   startDate: any,
@@ -36,7 +36,7 @@ export const generateTimeZoneMetadata = (
 
   return timeZoneItems.map((tzItem) => {
     const {label} = tzItem;
-    const continent = extractContinent(label);
+    const continent = extractRegion(label);
     const dates = theDates.map((date) => {
       const key = `${date}-${label}`;
       let utc = processedDates.get(key);
@@ -55,7 +55,7 @@ export const generateTimeZoneMetadata = (
     return {
       ...tzItem,
       continent,
-      isRegularContinent: isRegularContinent(continent),
+      isRegularContinent: continent !== global,
       dates,
     };
   });
@@ -73,8 +73,8 @@ export const getGroupLabelTimeZoneIndices = (
   rawTZs: RawTimeZone[],
   max = 5,
 ): number[] => {
-  const shrinkedTzs = rawTZs.filter(({label}) =>
-    isRegularContinent(extractContinent(label)),
+  const shrinkedTzs = rawTZs.filter(
+    ({label}) => extractRegion(label) !== global,
   );
 
   if (shrinkedTzs.length === 0) {
