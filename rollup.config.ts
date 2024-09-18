@@ -2,6 +2,7 @@ import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
+import terser from '@rollup/plugin-terser';
 import type {MergedRollupOptions} from 'rollup';
 
 const config: MergedRollupOptions = {
@@ -33,6 +34,13 @@ const config: MergedRollupOptions = {
       dir: 'dist',
       entryFileNames: '[name].mjs',
       format: 'esm',
+    },
+    {
+      chunkFileNames: 'chunks/[name]-[hash].min.mjs',
+      dir: 'dist',
+      entryFileNames: '[name].min.mjs',
+      format: 'esm',
+      plugins: [terser()],
     },
   ],
   plugins: [
