@@ -1,6 +1,8 @@
 import moment from 'moment-timezone';
 import type {DateEngine} from '../../types/interfaces.mjs';
 
+moment.tz.add('Factory|0|0|0||');
+
 class MomentDateEngine implements DateEngine<moment.Moment> {
   get name(): string {
     return 'moment';
