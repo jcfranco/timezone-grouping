@@ -20,3 +20,10 @@ export function extractRegion(tz: string): string {
   const separatorIndex = tz.indexOf('/');
   return separatorIndex === -1 ? tz : tz.slice(0, separatorIndex);
 }
+
+/**
+ * Gets the country code for a timezone.
+ */
+export function getCountry(timeZone: string): string {
+  return getCountryForTimezone(timeZone)?.id ?? timeZone;
+}

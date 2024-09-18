@@ -25,7 +25,6 @@ export type Grouping = {
 };
 
 export type TimeZone = string;
-export type CountryCode = string;
 
 export type FinalGrouping = Omit<Grouping, 'tzs'> & {
   tzs?: TimeZone[];

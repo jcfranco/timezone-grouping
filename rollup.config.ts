@@ -23,7 +23,6 @@ const config: MergedRollupOptions = {
 
     'groupByName/index': 'src/groupByName/index.mts',
 
-    'utils/country': 'src/utils/country.mts',
     'utils/region': 'src/utils/region.mts',
     'utils/time-zones': 'src/utils/time-zones.mts',
     /* eslint-enable @typescript-eslint/naming-convention */

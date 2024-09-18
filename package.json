@@ -51,10 +51,6 @@
       "import": "./dist/utils/region.mjs",
       "types": "./dist/utils/region.d.mts"
     },
-    "./utils/country": {
-      "import": "./dist/utils/country.mjs",
-      "types": "./dist/utils/country.d.mts"
-    },
     "./utils/time-zones": {
       "import": "./dist/utils/time-zones.mjs",
       "types": "./dist/utils/time-zones.d.mts"
