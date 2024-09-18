@@ -6,8 +6,9 @@
     import { groupByRegion } from "../dist/groupByRegion/index.mjs";
     import { groupByName } from "../dist/groupByName/index.mjs";
 
-    console.log(await groupByName(), "Name");
-    console.log(await groupByRegion(), "REGION");
+    console.log("Generated name groups", await groupByName());
+
+    console.log("Generated region groups", await groupByRegion());
 
     await groupTimeZonesWith("native");
 
@@ -17,7 +18,7 @@
 
     await groupTimeZonesWith("luxon");
 
-    // await groupTimeZonesWith("dayjs");
+    await groupTimeZonesWith("dayjs");
 
     async function groupTimeZonesWith(dateEngine) {
       const { DateEngine } = await import(
@@ -27,7 +28,7 @@
         dateEngine: new DateEngine(),
       });
       console.log(
-        `Generated ${timeZoneGroups.length} groups (using ${dateEngine})`,
+        `Generated offset ${timeZoneGroups.length} groups (using ${dateEngine})`,
         timeZoneGroups,
       );
     }
