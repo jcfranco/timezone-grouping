@@ -70,7 +70,7 @@
     "url": "https://github.com/jcfranco/timezone-groups.git"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "8.0.1",
+    "@release-it/conventional-changelog": "8.0.2",
     "@rollup/plugin-commonjs": "26.0.1",
     "@rollup/plugin-json": "6.1.0",
     "@rollup/plugin-node-resolve": "15.2.3",
