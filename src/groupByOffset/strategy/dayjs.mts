@@ -24,6 +24,11 @@ class DayJsDateEngine implements DateEngine<dayjs.Dayjs> {
   }
 
   isoToTimeZone(isoDate: string, tz: string) {
+    // Workaround for https://issues.chromium.org/issues/381620359
+    if (tz === 'Factory') {
+      tz = 'Etc/GMT';
+    }
+
     return dayjs.tz(isoDate, tz);
   }
 
