@@ -22,10 +22,13 @@ npm install timezone-groups
 ### `groupByOffset`
 
 ```javascript
+import { groupByOffset } from "timezone-groups/groupByOffset";
+import { DateEngine } from "timezone-groups/groupByOffset/strategy/native";
+
 const timeZoneGroups = await groupByOffset({
   startDate, // The start reference date to generate the groups (defaults to now).
   groupDateRange, // The number of days to consider for the DST groupings (defaults to 365).
-  dateEngine, // The date engine instance used to generate groups. You can use the `createDateEngine` utility to create an engine from any of the supported engine values. Alternatively, a custom date engine instance used to generate groups.
+  dateEngine: new DateEngine(), // The date engine instance used to generate groups. You can use the `createDateEngine` utility to create an engine from any of the supported engine values. Alternatively, a custom date engine instance used to generate groups.
 });
 
 console.log(timeZoneGroups);
@@ -43,6 +46,8 @@ console.log(timeZoneGroups);
 ### `groupByName`
 
 ```javascript
+import { groupByName } from "timezone-groups/groupByName";
+
 const timeZoneGroups = await groupByName();
 
 console.log(timeZoneGroups);
@@ -62,6 +67,8 @@ console.log(timeZoneGroups);
 ### `groupByRegion`
 
 ```javascript
+import { groupByRegion } from "timezone-groups/groupByRegion";
+
 const timeZoneGroups = await groupByRegion();
 
 console.log(timeZoneGroups);
