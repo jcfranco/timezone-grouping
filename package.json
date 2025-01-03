@@ -86,7 +86,7 @@
     "lint-staged": "15.2.7",
     "luxon": "3.4.4",
     "markdownlint-cli": "0.43.0",
-    "moment-timezone": "0.5.45",
+    "moment-timezone": "0.5.46",
     "prettier": "3.4.2",
     "release-it": "17.11.0",
     "rimraf": "6.0.1",
